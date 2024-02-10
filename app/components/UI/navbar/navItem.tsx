@@ -1,7 +1,7 @@
 'use client';
 import { DropdownItemProps } from '@/app/lib/types';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DropdownItem from './dropdownItem';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 
@@ -12,6 +12,8 @@ interface NavItemProps {
   dropdown?: boolean;
   dropdownItems?: DropdownItemProps[];
   addClass?: string;
+  ref?: React.RefObject<HTMLButtonElement>;
+  [key: string]: any;
 }
 export default function NavItem({
   link,
@@ -20,12 +22,14 @@ export default function NavItem({
   dropdown,
   dropdownItems,
   addClass,
+  ref,
 }: NavItemProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const handleDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDropdown: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     setDropdownOpen((prev) => !prev);
   };
+  useEffect(() => {});
   return (
     <div className="relative group">
       <Link
@@ -43,6 +47,7 @@ export default function NavItem({
             !dropdownItems && 'hidden'
           } `}
           onClick={handleDropdown}
+          ref={ref}
         >
           {dropdownOpen ? (
             <IconChevronUp width={16} />

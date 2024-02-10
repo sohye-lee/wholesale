@@ -10,12 +10,6 @@ import MobileNav from './mobileNav';
 import { catalogDropdown } from './dropdownItemLists';
 
 export default function Navbar({ cartItemsCount }: NavbarProps) {
-  // const catalogDropdown: DropdownItemProps[] = [
-  //   { link: '/bracelets', text: 'Bracelets' },
-  //   { link: '/necklaces', text: 'Necklaces' },
-  //   { link: '/sets', text: 'Set' },
-  // ];
-
   return (
     <>
       <div className="hidden w-full lg:flex justify-center py-3 bg-white z-[100] fixed top-0 left-0 border-b border-stone-300">
@@ -29,6 +23,7 @@ export default function Navbar({ cartItemsCount }: NavbarProps) {
               active={false}
               dropdown={true}
               dropdownItems={catalogDropdown}
+              // setOpen={setOpen}
             >
               Catalog
             </NavItem>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/UI/navbar/page';
+import Footer from './components/UI/footer/page';
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={jakarta.className}>
         <Navbar cartItemsCount={0} />
         {children}
+        <Footer />
       </body>
     </html>
   );
