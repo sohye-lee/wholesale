@@ -34,7 +34,7 @@ export default function NavItem({
     <div className="relative group">
       <Link
         href={link}
-        className={`relative uppercase py-5 text-sm  ${addClass}`}
+        className={`relative uppercase py-4 text-sm inline-flex items-center gap-2  ${addClass}`}
       >
         {children}
         <div

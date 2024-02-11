@@ -8,8 +8,11 @@ import Button from '../button/page';
 import CartItem from './cartItem';
 import MobileNav from './mobileNav';
 import { catalogDropdown } from './dropdownItemLists';
+import useAuth from '@/app/hooks/useAuth';
+import ProfileInfo from './profileInfo';
 
 export default function Navbar({ cartItemsCount }: NavbarProps) {
+  const { loading, loggedIn, isAdmin } = useAuth();
   return (
     <>
       <div className="hidden w-full lg:flex justify-center py-3 bg-white z-[100] fixed top-0 left-0 border-b border-stone-300">
@@ -33,14 +36,18 @@ export default function Navbar({ cartItemsCount }: NavbarProps) {
           </div>
           <div className="flex items-center justify-end gap-4 min-w-[200px]">
             <CartItem dark={true} cartItemsCount={cartItemsCount} />
-            <div className="flex items-center gap-3">
-              <Button size="xsmall" mode="neutral">
-                Login
-              </Button>
-              <Button size="xsmall" mode="neutral">
-                Register
-              </Button>
-            </div>
+            {loggedIn ? (
+              <ProfileInfo isAdmin={isAdmin} />
+            ) : (
+              <div className="flex items-center gap-3">
+                <Button size="xsmall" mode="neutral">
+                  Login
+                </Button>
+                <Button size="xsmall" mode="neutral">
+                  Register
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

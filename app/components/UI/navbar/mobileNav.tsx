@@ -7,11 +7,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import Logo from '@/public/logo-white.svg';
 import CartItem from './cartItem';
 import NavItem from './navItem';
-import { catalogDropdown } from './dropdownItemLists';
+import { catalogDropdown, profileDropdown } from './dropdownItemLists';
 import Button from '../button/page';
+import useAuth from '@/app/hooks/useAuth';
 
 export default function MobileNav({ cartItemsCount }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const { isAdmin, loggedIn } = useAuth();
   const mobileMenuBg = useRef<HTMLDivElement>(null);
 
   function assertIsNode(e: EventTarget | null): asserts e is Node {
@@ -70,7 +72,7 @@ export default function MobileNav({ cartItemsCount }: NavbarProps) {
             <IconX width={16} className="text-stone-700" />
           </button>
         </div>
-        <div className="flex flex-col gap-4 mt-12">
+        <div className="flex flex-col   mt-12">
           <NavItem
             link="/catalog"
             active={false}
@@ -88,16 +90,55 @@ export default function MobileNav({ cartItemsCount }: NavbarProps) {
           >
             Sale
           </NavItem>
-          <hr className="my-8" />
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
-              <Button size="xsmall" mode="neutral">
-                Login
-              </Button>
-              <Button size="xsmall" mode="neutral">
-                Register
-              </Button>
-            </div>
+          <hr className="my-3" />
+          <div className="flex items-center">
+            {loggedIn ? (
+              <div className="   ">
+                {profileDropdown.map((profile) => {
+                  return (
+                    <NavItem
+                      key={profile.link}
+                      link={profile.link}
+                      active={false}
+                      dropdown={false}
+                      setOpen={setOpen}
+                      addClass={!isAdmin && profile.isAdmin ? 'hidden' : 'flex'}
+                    >
+                      {profile.dropdownIcon && (
+                        <profile.dropdownIcon width={16} />
+                      )}
+                      {profile.text}
+                    </NavItem>
+                  );
+                })}
+                {/* {profileDropdown.map((profile) => {
+                  return (
+                    <Link
+                      href={profile.link}
+                      key={profile.text}
+                      onClick={() => setOpen(false)}
+                      className={`${
+                        !isAdmin && profile.isAdmin ? 'hidden' : 'flex'
+                      } items-center gap-2 py-2 px-5 border-b text-stone-800 border-gray-100 last:border-none hover:bg-stone-100 hover:text-amber-800`}
+                    >
+                      {profile.dropdownIcon && (
+                        <profile.dropdownIcon width={16} />
+                      )}
+                      <span className="text-sm  pr-1">{profile.text}</span>
+                    </Link>
+                  );
+                })} */}
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Button size="xsmall" mode="neutral">
+                  Login
+                </Button>
+                <Button size="xsmall" mode="neutral">
+                  Register
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
