@@ -43,29 +43,29 @@ export default function Button({
       sizeClass = 'px-[6px] py-[2px] text-[12px]';
       break;
     case 'small':
-      sizeClass = 'px-2 py-1 text-xs';
+      sizeClass = 'px-3 py-2 text-xs';
       break;
     case 'medium':
-      sizeClass = 'px-4 py-3 text-sm';
+      sizeClass = 'px-4 py-4 text-xs';
       break;
     case 'large':
-      sizeClass = 'px-5 py-4 text-md';
+      sizeClass = 'px-5 py-5 text-sm';
       break;
     default:
-      sizeClass = 'text-sm py-4 py-3';
+      sizeClass = 'text-sm py-4 py-3 text-xs';
   }
   return (
     <>
       {!link || link.length == 0 ? (
         <div
-          className={`transition-all px-4 py-2 spacing-1 cursor-pointer hover:bg-stone-600 hover:text-white flex items-center justify-center text-sm uppercase ${sizeClass} ${modeClass} ${addClass}`}
+          className={`transition-all px-4 py-2 spacing-2 cursor-pointer hover:bg-stone-600 hover:text-white flex items-center justify-center text-sm uppercase ${sizeClass} ${modeClass} ${addClass}`}
         >
           {children}
         </div>
       ) : (
         <Link
           href={link}
-          className={`transition-all px-4 py-2 spacing-1 cursor-pointer hover:bg-stone-600 hover:text-white flex items-center justify-center text-sm uppercase ${sizeClass} ${modeClass} ${addClass}`}
+          className={`transition-all px-4 py-2 spacing-2 cursor-pointer hover:bg-stone-600 hover:text-white flex items-center justify-center text-sm uppercase ${sizeClass} ${modeClass} ${addClass}`}
         >
           {children}
         </Link>

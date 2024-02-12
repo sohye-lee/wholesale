@@ -4,11 +4,13 @@ interface ContainerProps {
   width?: 'full' | 'container' | 'small';
   bgColor?: string;
   children: React.ReactNode;
+  addClass?: string;
 }
 export default function Container({
   width,
   bgColor,
   children,
+  addClass,
 }: ContainerProps) {
   return (
     <div
@@ -19,9 +21,9 @@ export default function Container({
           width == 'container' || !width
             ? 'lg:max-w-[1200px] '
             : width == 'small'
-            ? 'lg:max-w-[699px]'
+            ? 'lg:max-w-[549px]'
             : 'w-full'
-        } ${bgColor} `}
+        } ${addClass} `}
       >
         {children}
       </div>
