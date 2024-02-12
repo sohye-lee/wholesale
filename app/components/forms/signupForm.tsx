@@ -1,30 +1,49 @@
-'use client';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import Input from './input';
-import Button from '../UI/button/page';
-import Link from 'next/link';
+"use client";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Input from "./input";
+import Button from "../UI/button/page";
+import Link from "next/link";
+import useRequest from "@/app/hooks/useRequest";
+import { NewUserRequest } from "@/app/lib/types";
+import { useRouter } from "next/navigation";
 
-interface SignupFormProps {
-  name: string;
-  email: string;
-  password: string;
-}
 export default function SignUpForm() {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors },
-  } = useForm<SignupFormProps>();
+  } = useForm<NewUserRequest>();
+
+  const [createUser, { data, error, loading }] = useRequest(
+    "/api/users",
+    "POST"
+  );
+
+  const onValid = (validForm: NewUserRequest) => {
+    createUser(validForm);
+  };
+
+  useEffect(() => {
+    data && data?.user && router.push("/");
+  }, [data, data?.user, router]);
+
   return (
-    <form className="w-full border flex flex-col items-center border-stone-300 p-8 gap-3 bg-white">
+    <form
+      onSubmit={handleSubmit(onValid)}
+      className="w-full border flex flex-col items-center border-stone-300 p-8 gap-3 bg-white"
+    >
+      {error && <span>{new Error(error as any).message}</span>}
+      {data?.message && <span>{data?.message}</span>}
       <h1 className="text-xl font-medium uppercase text-center mb-3">
         Create New Account
       </h1>
       <Input
         placeholder="name"
         name="name"
-        register={register('name')}
+        register={register("name", { required: "This field is required." })}
         type="text"
         required={true}
         errorMessage={errors.name?.message || null}
@@ -32,7 +51,7 @@ export default function SignUpForm() {
       <Input
         placeholder="email"
         name="email"
-        register={register('email')}
+        register={register("email", { required: "This field is required." })}
         type="email"
         required={true}
         errorMessage={errors.email?.message || null}
@@ -40,12 +59,19 @@ export default function SignUpForm() {
       <Input
         placeholder="password"
         name="password"
-        register={register('password')}
+        register={register("password", { required: "This field is required." })}
         type="password"
         required={true}
         errorMessage={errors.password?.message || null}
       />
-      <Button mode="CTA" addClass="w-full py-3" button={true} size="medium">
+      <Button
+        mode="CTA"
+        addClass="w-full py-3"
+        button={true}
+        size="medium"
+        loading={loading}
+        disabled={!watch("name") && !watch("email") && !watch("password")}
+      >
         Create
       </Button>
       <Button

@@ -22,7 +22,8 @@
       "@app/*": ["./app/*"],
       "@components/*": ["./app/components/*"],
       "@layouts/*": ["./components/layouts/*"],
-      "@lib/*": ["./lib/*"],
+      "@lib/*": ["./app/lib/*"],
+      "@models/*": ["./app/models/*"],
       "@images/*": ["./public/images/*"]
     }
   },

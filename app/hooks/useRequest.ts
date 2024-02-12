@@ -1,4 +1,5 @@
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 interface useRequestState {
   loading: boolean;
@@ -9,7 +10,7 @@ interface useRequestState {
 type useRequestResult = [(data: any) => void, useRequestState];
 export default function useRequest(
   url: string,
-  method: 'POST' | 'PUT' | 'DELETE'
+  method: "POST" | "PUT" | "DELETE"
 ): useRequestResult {
   const [state, setState] = useState<useRequestState>({
     loading: false,
@@ -22,7 +23,7 @@ export default function useRequest(
     fetch(url, {
       method,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
