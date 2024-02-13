@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface useRequestState {
   loading: boolean;
@@ -27,8 +28,15 @@ export default function useRequest(
       },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json().catch(() => {}))
-      .then((data) => setState((prev) => ({ ...prev, loading: false, data })))
+      .then(async (res) => await res.json())
+      .then((data) => {
+        setState((prev) => ({ ...prev, loading: false, data }));
+        if (data.ok) {
+          toast.success(data?.message);
+        } else {
+          toast.error(data?.message);
+        }
+      })
       .catch((error) =>
         setState((prev) => ({ ...prev, loading: false, error }))
       )

@@ -1,8 +1,10 @@
 import { NewUserRequest } from "@/app/lib/types";
+import EmailVerificationToken from "@models/emailVerificationToken";
 import UserModel from "@/app/models/userModel";
 import startDb from "@lib/db";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 export const GET = async (req: Request) => {
   await startDb();
@@ -30,6 +32,13 @@ export const POST = async (req: Request) => {
 
   const newUser = await UserModel.create({ ...body });
 
+  const token = crypto.randomBytes(36).toString("hex");
+
+  EmailVerificationToken.create({
+    user: newUser._id,
+    token,
+  });
+
   const transport = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
     port: 2525,
@@ -39,11 +48,16 @@ export const POST = async (req: Request) => {
     },
   });
 
+  const verificationUrl = `http://localhost:3001/verify?token=${token}&userId=${newUser._id}`;
+
   transport.sendMail({
     from: "verification@claviswholesale.com",
     to: newUser.email,
-    html: `<p>Please verify your email by clicking <a href="http://localhost:3001">this link</a></p>`,
+    html: `<p>Please verify your email by clicking <a href="${verificationUrl}">this link</a></p>`,
   });
 
-  return NextResponse.json({ ok: true, user: newUser });
+  return NextResponse.json({
+    ok: true,
+    message: "A verification email has been sent. Please check your mailbox!",
+  });
 };

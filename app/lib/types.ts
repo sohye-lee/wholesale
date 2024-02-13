@@ -22,8 +22,19 @@ export interface ProfileInfoProps {
   isAdmin?: boolean;
 }
 
+// Requests
+
 export interface NewUserRequest {
   email: string;
   name: string;
   password: string;
+}
+
+export interface EmailVerifyRequest {
+  userId: string;
+  token: string;
+}
+
+export interface PageProps {
+  searchParams: { token?: string; userId?: string };
 }

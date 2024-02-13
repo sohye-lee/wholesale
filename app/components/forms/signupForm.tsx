@@ -7,6 +7,7 @@ import Link from "next/link";
 import useRequest from "@/app/hooks/useRequest";
 import { NewUserRequest } from "@/app/lib/types";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function SignUpForm() {
 
   useEffect(() => {
     data && data?.user && router.push("/");
+    data?.ok && toast.success(data?.message);
   }, [data, data?.user, router]);
 
   return (
