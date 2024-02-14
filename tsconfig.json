@@ -21,7 +21,8 @@
       "@/*": ["./*"],
       "@app/*": ["./app/*"],
       "@components/*": ["./app/components/*"],
-      "@layouts/*": ["./components/layouts/*"],
+      "@layouts/*": ["./app/components/layouts/*"],
+      "@providers/*": ["./app/providers/*"],
       "@lib/*": ["./app/lib/*"],
       "@models/*": ["./app/models/*"],
       "@images/*": ["./public/images/*"]

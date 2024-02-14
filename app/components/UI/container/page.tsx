@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 interface ContainerProps {
-  width?: 'full' | 'container' | 'small';
+  width?: "full" | "container" | "small";
   bgColor?: string;
   children: React.ReactNode;
   addClass?: string;
@@ -18,11 +18,11 @@ export default function Container({
     >
       <div
         className={`px-5 w-full ${
-          width == 'container' || !width
-            ? 'lg:max-w-[1200px] '
-            : width == 'small'
-            ? 'lg:max-w-[549px]'
-            : 'w-full'
+          width == "container" || !width
+            ? "lg:max-w-[1200px] "
+            : width == "small"
+            ? "md:max-w-[549px]"
+            : "w-full"
         } ${addClass} `}
       >
         {children}

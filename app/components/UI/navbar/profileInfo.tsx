@@ -1,8 +1,10 @@
-'use client';
-import { ProfileInfoProps } from '@/app/lib/types';
-import React, { useEffect, useRef, useState } from 'react';
-import { profileDropdown } from './dropdownItemLists';
-import Link from 'next/link';
+"use client";
+import { ProfileInfoProps } from "@/app/lib/types";
+import React, { useEffect, useRef, useState } from "react";
+import { profileDropdown } from "./dropdownItemLists";
+import Link from "next/link";
+import SignOutButton from "../../forms/signoutButton";
+import { IconLogout2 } from "@tabler/icons-react";
 
 export default function ProfileInfo({
   username,
@@ -15,7 +17,7 @@ export default function ProfileInfo({
     setOpen((prev) => !prev);
   };
   function assertIsNode(e: EventTarget | null): asserts e is Node {
-    if (!e || !('nodeType' in e)) {
+    if (!e || !("nodeType" in e)) {
       throw new Error(`Node expected`);
     }
   }
@@ -27,8 +29,9 @@ export default function ProfileInfo({
         setOpen(false);
       }
     }
-    window.addEventListener('click', handleClick);
+    window.addEventListener("click", handleClick);
   }, [open]);
+
   return (
     <div className="relative">
       <div
@@ -36,8 +39,8 @@ export default function ProfileInfo({
         ref={profileAvatar}
         className={`w-10 h-10 rounded-full cursor-pointer ${
           !avatar
-            ? 'bg-gradient-to-r from-teal-600 to-amber-700'
-            : 'bg-cover bg-no-repeat bg-[url(' + avatar + ')]'
+            ? "bg-gradient-to-r from-teal-600 to-amber-700"
+            : "bg-cover bg-no-repeat bg-[url(" + avatar + ")]"
         }`}
       ></div>
       {open && (
@@ -49,7 +52,7 @@ export default function ProfileInfo({
                 key={profile.text}
                 onClick={() => setOpen(false)}
                 className={`${
-                  !isAdmin && profile.isAdmin ? 'hidden' : 'flex'
+                  !isAdmin && profile.isAdmin ? "hidden" : "flex"
                 } items-center gap-2 py-2 px-5 border-b text-stone-800 border-gray-100 last:border-none hover:bg-stone-100 hover:text-amber-800`}
               >
                 {profile.dropdownIcon && <profile.dropdownIcon width={16} />}
@@ -57,6 +60,15 @@ export default function ProfileInfo({
               </Link>
             );
           })}
+          <SignOutButton>
+            <div
+              onClick={() => setOpen(false)}
+              className={`flex items-center gap-2 py-2 px-5 border-b text-stone-800 border-gray-100 last:border-none hover:bg-stone-100 hover:text-amber-800`}
+            >
+              <IconLogout2 width={16} />
+              <span className="text-sm  pr-1">Logout</span>
+            </div>
+          </SignOutButton>
         </div>
       )}
     </div>

@@ -1,22 +1,46 @@
-'use client';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import Input from './input';
-import Button from '../UI/button/page';
-import Link from 'next/link';
+"use client";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Input from "./input";
+import Button from "../UI/button/page";
+import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import { useRouter, redirect } from "next/navigation";
 
 interface SigninFormProps {
   email: string;
   password: string;
 }
 export default function SignInForm() {
+  const router = useRouter();
+  const session = useSession();
+  console.log(session);
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<SigninFormProps>();
+  } = useForm<SigninFormProps>({ mode: "onBlur" });
+
+  const onValid = async (validForm: SigninFormProps) => {
+    const res = await signIn("credentials", { ...validForm, redirect: false });
+    if (res?.error == "CredentialsSignin") {
+      toast.error("The password does not match.");
+    }
+    if (!res?.error) {
+      router.refresh();
+      toast.success("Successfully logged in!");
+    }
+  };
+
+  useEffect(() => {
+    session?.data?.user && redirect("/");
+  }, [session?.data?.user]);
   return (
-    <form className="w-full border flex flex-col items-center border-stone-300 p-8 gap-3 bg-white">
+    <form
+      onSubmit={handleSubmit(onValid)}
+      className="w-full border flex flex-col items-center border-stone-300 p-8 gap-3 bg-white"
+    >
       <h1 className="text-xl font-medium uppercase text-center mb-3">
         Welcome Back
       </h1>
@@ -24,7 +48,9 @@ export default function SignInForm() {
       <Input
         placeholder="email"
         name="email"
-        register={register('email')}
+        register={register("email", {
+          required: "You must write your email address.",
+        })}
         type="email"
         required={true}
         errorMessage={errors.email?.message || null}
@@ -32,7 +58,9 @@ export default function SignInForm() {
       <Input
         placeholder="password"
         name="password"
-        register={register('password')}
+        register={register("password", {
+          required: "Please write your password.",
+        })}
         type="password"
         required={true}
         errorMessage={errors.password?.message || null}

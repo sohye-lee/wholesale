@@ -16,7 +16,7 @@ export default function SignUpForm() {
     register,
     watch,
     formState: { errors },
-  } = useForm<NewUserRequest>();
+  } = useForm<NewUserRequest>({ mode: "onBlur" });
 
   const [createUser, { data, error, loading }] = useRequest(
     "/api/users",

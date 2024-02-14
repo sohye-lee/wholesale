@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@components/UI/navbar/page";
 import Footer from "@components/UI/footer/page";
 import Notification from "@components/UI/notification/page";
+import { SessionProvider } from "next-auth/react";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -18,13 +19,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={jakarta.className}>
-        <Navbar cartItemsCount={0} />
-        {children}
-        <Notification />
-        <Footer />
-      </body>
-    </html>
+    <SessionProvider>
+      <html lang="en">
+        <body className={jakarta.className}>
+          <Navbar cartItemsCount={0} />
+          {children}
+          <Notification />
+          <Footer />
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

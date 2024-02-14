@@ -1,14 +1,6 @@
 import { compare, genSalt, hash } from "bcrypt";
-import { Document, Model, Schema, model, models } from "mongoose";
-
-interface UserDocument extends Document {
-  email: string;
-  name: string;
-  password: string;
-  role: "admin" | "user";
-  avatar: { url: string; id: string };
-  verified: boolean;
-}
+import { Model, Schema, model, models } from "mongoose";
+import { UserDocument } from "@lib/types";
 
 interface Method {
   comparePassword(password: string): Promise<boolean>;

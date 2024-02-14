@@ -3,6 +3,7 @@
 import { IconProps } from "@tabler/icons-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
+// UI Component props
 export interface DropdownItemProps {
   link: string;
   text: string;
@@ -37,4 +38,19 @@ export interface EmailVerifyRequest {
 
 export interface PageProps {
   searchParams: { token?: string; userId?: string };
+}
+
+export interface SignInCredential {
+  email: string;
+  password: string;
+}
+
+// DB Model Documents
+export interface UserDocument extends Document {
+  email: string;
+  name: string;
+  password: string;
+  role: "admin" | "user";
+  avatar?: { url: string; id: string };
+  verified: boolean;
 }
