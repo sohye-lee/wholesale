@@ -1,6 +1,6 @@
-"use client";
-import { useState } from "react";
-import { toast } from "react-toastify";
+'use client';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface useRequestState {
   loading: boolean;
@@ -11,7 +11,7 @@ interface useRequestState {
 type useRequestResult = [(data: any) => void, useRequestState];
 export default function useRequest(
   url: string,
-  method: "POST" | "PUT" | "DELETE"
+  method: 'POST' | 'PUT' | 'DELETE'
 ): useRequestResult {
   const [state, setState] = useState<useRequestState>({
     loading: false,
@@ -24,18 +24,14 @@ export default function useRequest(
     fetch(url, {
       method,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
       .then(async (res) => await res.json())
       .then((data) => {
         setState((prev) => ({ ...prev, loading: false, data }));
-        if (data.ok) {
-          toast.success(data?.message);
-        } else {
-          toast.error(data?.message);
-        }
+        data?.message && toast.info(data?.message);
       })
       .catch((error) =>
         setState((prev) => ({ ...prev, loading: false, error }))
