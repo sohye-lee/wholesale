@@ -86,7 +86,7 @@ export default function SignUpForm() {
         Login
       </Button>
       <div className="text-center text-xs text-stone-700 hover:text-amber-800">
-        <Link href="/forgotpassword">Forgot Password</Link>
+        <Link href="/auth/forgot-password">Forgot Password</Link>
       </div>
     </form>
   );

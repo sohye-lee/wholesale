@@ -30,6 +30,17 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+userSchema.pre("updateOne", async function (next) {
+  try {
+    console.log("password update working");
+    const user = await this.model.findOne(this.getQuery());
+    const salt = await genSalt(10);
+    this.set({ password: await hash(user.password, salt) });
+  } catch (error) {
+    throw error;
+  }
+});
+
 userSchema.methods.comparePassword = async function (password) {
   try {
     return await compare(password, this.password);

@@ -7,29 +7,27 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { useRouter, redirect } from "next/navigation";
+import useRequest from "@/app/hooks/useRequest";
 
-interface SigninFormProps {
+interface ForgotPasswordForm {
   email: string;
-  password: string;
 }
-export default function SignInForm() {
+
+export default function ForgotPasswordForm() {
   const router = useRouter();
   const session = useSession();
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<SigninFormProps>({ mode: "onBlur" });
+  } = useForm<ForgotPasswordForm>({ mode: "onBlur" });
+  const [sendLink, { data, error, loading }] = useRequest(
+    "/api/users/forgot-password",
+    "POST"
+  );
 
-  const onValid = async (validForm: SigninFormProps) => {
-    const res = await signIn("credentials", { ...validForm, redirect: false });
-    if (res?.error == "CredentialsSignin") {
-      toast.error("The password does not match.");
-    }
-    if (!res?.error) {
-      router.refresh();
-      toast.success("Successfully logged in!");
-    }
+  const onValid = async (validForm: ForgotPasswordForm) => {
+    sendLink(validForm);
   };
 
   useEffect(() => {
@@ -41,7 +39,7 @@ export default function SignInForm() {
       className="w-full border flex flex-col items-center border-stone-300 p-8 gap-3 bg-white"
     >
       <h1 className="text-xl font-medium uppercase text-center mb-3">
-        Welcome Back
+        Forgot Your Password?
       </h1>
 
       <Input
@@ -54,17 +52,17 @@ export default function SignInForm() {
         required={true}
         errorMessage={errors.email?.message || null}
       />
-      <Input
-        placeholder="password"
-        name="password"
-        register={register("password", {
-          required: "Please write your password.",
-        })}
-        type="password"
-        required={true}
-        errorMessage={errors.password?.message || null}
-      />
+
       <Button mode="CTA" addClass="w-full py-3" button={true} size="medium">
+        Send Link
+      </Button>
+      <Button
+        mode="neutral"
+        addClass="w-full py-3"
+        button={false}
+        link="/auth/login"
+        size="medium"
+      >
         Login
       </Button>
       <Button
@@ -76,8 +74,8 @@ export default function SignInForm() {
       >
         Sign Up
       </Button>
-      <div className="text-center text-xs text-stone-700 hover:text-amber-800">
-        <Link href="/auth/forgot-password">Forgot Password</Link>
+      <div className="text-center text-xs text-stone-700 hover:text-amber-800 mt-3">
+        <Link href="/">Go Home</Link>
       </div>
     </form>
   );
