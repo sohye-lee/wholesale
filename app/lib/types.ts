@@ -1,14 +1,14 @@
 // import { Icon, IconNode } from '@tabler/icons-react';
 
-import { IconProps } from "@tabler/icons-react";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { IconProps } from '@tabler/icons-react';
+import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 // UI Component props
 export interface DropdownItemProps {
   link: string;
   text: string;
   dropdownIcon?: ForwardRefExoticComponent<
-    Omit<IconProps, "ref"> & RefAttributes<SVGSVGElement>
+    Omit<IconProps, 'ref'> & RefAttributes<SVGSVGElement>
   > | null;
   isAdmin?: boolean;
 }
@@ -50,7 +50,16 @@ export interface UserDocument extends Document {
   email: string;
   name: string;
   password: string;
-  role: "admin" | "user";
+  role: 'admin' | 'user';
   avatar?: { url: string; id: string };
   verified: boolean;
+}
+
+// other
+export type NotificationMode = 'info' | 'success' | 'error' | 'warning';
+export interface NotificationProps {
+  mode: NotificationMode;
+  message: string;
+  timeout: number;
+  handleClose: () => void;
 }
