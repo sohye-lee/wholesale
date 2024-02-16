@@ -19,7 +19,7 @@ export default function Notification({
       }, timeout * 1000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [handleClose, timeout]);
   return (
     message?.length && (
       <div className="fixed bg-[rgba(0,0,0,.1)] w-screen h-screen flex items-center justify-center">
