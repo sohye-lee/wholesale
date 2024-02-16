@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import useNotification from "./useNotification";
+// import useNotification from "./useNotification";
 
 interface useRequestState {
   loading: boolean;
@@ -21,7 +21,7 @@ export default function useRequest(
     data: undefined,
   });
 
-  const { notify } = useNotification();
+  // const { notify } = useNotification();
   function func(data: any) {
     setState((prev) => ({ ...prev, loading: true }));
     fetch(url, {
@@ -34,12 +34,12 @@ export default function useRequest(
       .then(async (res) => await res.json())
       .then((data) => {
         setState((prev) => ({ ...prev, loading: false, data }));
-        // data?.message && toast.info(data?.message);
-        data?.message &&
-          notify({
-            mode: data?.ok ? "success" : "error",
-            message: data?.message,
-          });
+        data?.message && toast.info(data?.message);
+        // data?.message &&
+        //   notify({
+        //     mode: data?.ok ? "success" : "error",
+        //     message: data?.message,
+        //   });
       })
       .catch((error) =>
         setState((prev) => ({ ...prev, loading: false, error }))
