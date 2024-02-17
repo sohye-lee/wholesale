@@ -1,18 +1,18 @@
-"use client";
-import Button from "@/app/components/UI/button/page";
-import Container from "@/app/components/UI/container/page";
-import useRequest from "@/app/hooks/useRequest";
-import { notFound, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
-import { toast } from "react-toastify";
+'use client';
+import Button from '@/app/components/UI/button/page';
+import Container from '@/app/components/UI/container/page';
+import useRequest from '@/app/hooks/useRequest';
+import { notFound, useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function VerifyPage() {
   const params = useSearchParams();
-  const userId = params.get("userId");
-  const token = params.get("token");
+  const userId = params.get('userId');
+  const token = params.get('token');
   const [verifyToken, { data, error, loading }] = useRequest(
     `/api/users/verify`,
-    "POST"
+    'POST'
   );
 
   if (!userId || !token) return notFound();
@@ -26,7 +26,7 @@ export default function VerifyPage() {
     // error && toast.error(new Error(error as any).message);
     data?.error && toast.error(data?.error);
     data?.ok && toast.success(data?.message);
-  }, [token, userId]);
+  }, [data?.error, data?.message, data?.ok, token, userId, verifyToken]);
   return (
     <Container width="small">
       <div className=" h-[calc(100vh-260px)] w-full flex items-center justify-center">
