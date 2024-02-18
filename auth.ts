@@ -1,21 +1,20 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { SignInCredential } from "./app/lib/types";
+import NextAuth, { NextAuthConfig } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { SignInCredential, UserDocument } from './app/lib/types';
+ 
 
 const authConfig: NextAuthConfig = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
-      type: "credentials",
-      credentials: {
-        // leave empty as I'm using my own UI
-      },
+      name: 'Credentials',
+      type: 'credentials',
+      credentials: {},
       async authorize(credentials, req) {
         const { email, password } = credentials as SignInCredential;
         const data = await fetch(`${process.env.HOST}/api/users/signin`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email, password }),
         }).then(async (res) => await res.json());

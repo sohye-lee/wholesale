@@ -1,7 +1,7 @@
-import startDb from "@/app/lib/db";
-import EmailVerificationToken from "@/app/models/emailVerificationToken";
-import UserModel from "@/app/models/userModel";
-import { NextResponse } from "next/server";
+import startDb from '@/app/lib/db';
+import EmailVerificationToken from '@/app/models/emailVerificationToken';
+import UserModel from '@/app/models/userModel';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface ResetPasswordRequest {
   password: string;
@@ -19,7 +19,7 @@ export const PUT = async (req: Request) => {
     return NextResponse.json(
       {
         ok: false,
-        message: "Not a valid request.",
+        message: 'Not a valid request.',
       },
       { status: 401 }
     );
@@ -32,7 +32,7 @@ export const PUT = async (req: Request) => {
     return NextResponse.json(
       {
         ok: false,
-        message: "No token.",
+        message: 'No token.',
       },
       { status: 401 }
     );
@@ -45,7 +45,7 @@ export const PUT = async (req: Request) => {
 
   return NextResponse.json({
     ok: true,
-    message: "Successfully updated! Please login with your new password.",
+    message: 'Successfully updated! Please login with your new password.',
     user,
   });
 };

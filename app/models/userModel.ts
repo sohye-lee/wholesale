@@ -1,6 +1,6 @@
-import { compare, genSalt, hash } from "bcrypt";
-import { Model, Schema, model, models } from "mongoose";
-import { UserDocument } from "@lib/types";
+import { compare, genSalt, hash } from 'bcrypt';
+import { Model, Schema, model, models } from 'mongoose';
+import { UserDocument } from '@lib/types';
 
 interface Method {
   comparePassword(password: string): Promise<boolean>;
@@ -11,16 +11,16 @@ const userSchema = new Schema<UserDocument, {}, Method>(
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true, trim: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["admin", "user"], default: "user" },
+    role: { type: String, enum: ['admin', 'user'], default: 'user' },
     avatar: { type: Object, url: String, id: String },
     verified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   try {
-    if (!this.isModified("password")) {
+    if (!this.isModified('password')) {
       return next();
     }
     const salt = await genSalt(10);
@@ -30,9 +30,9 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-userSchema.pre("updateOne", async function (next) {
+userSchema.pre('updateOne', async function (next) {
   try {
-    console.log("password update working");
+    console.log('password update working');
     const user = await this.model.findOne(this.getQuery());
     const salt = await genSalt(10);
     this.set({ password: await hash(user.password, salt) });
@@ -49,6 +49,6 @@ userSchema.methods.comparePassword = async function (password) {
   }
 };
 
-const UserModel = models.User || model("User", userSchema);
+const UserModel = models.User || model('User', userSchema);
 
 export default UserModel as Model<UserDocument, {}, Method>;

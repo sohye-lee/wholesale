@@ -1,8 +1,7 @@
 import startDb from '@/app/lib/db';
 import { SignInCredential } from '@/app/lib/types';
 import UserModel from '@/app/models/userModel';
-import { hash } from 'bcrypt';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (req: Request) => {
   // try {

@@ -1,6 +1,5 @@
-import { combineStrings } from "./../lib/functions";
-import { compare, genSalt, hash } from "bcrypt";
-import mongoose, { Document, Model, ObjectId, Schema, models } from "mongoose";
+import { compare, genSalt, hash } from 'bcrypt';
+import mongoose, { Document, Model, ObjectId, Schema, models } from 'mongoose';
 
 interface EmailVerificationTokenDocument extends Document {
   user: ObjectId;
@@ -19,7 +18,7 @@ const emailVerificationTokenSchema = new Schema<
 >({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   token: {
@@ -33,9 +32,9 @@ const emailVerificationTokenSchema = new Schema<
   },
 });
 
-emailVerificationTokenSchema.pre("save", async function (next) {
+emailVerificationTokenSchema.pre('save', async function (next) {
   try {
-    if (!this.isModified("token")) {
+    if (!this.isModified('token')) {
       return next();
     }
     const salt = await genSalt(10);
@@ -52,7 +51,7 @@ emailVerificationTokenSchema.methods.compareToken = function (tokenToCompare) {
 
 const EmailVerificationToken =
   models.EmailVerificationToken ||
-  mongoose.model("EmailVerificationToken", emailVerificationTokenSchema);
+  mongoose.model('EmailVerificationToken', emailVerificationTokenSchema);
 
 export default EmailVerificationToken as Model<
   EmailVerificationTokenDocument,

@@ -1,9 +1,9 @@
-import startDb from "@/app/lib/db";
-import UserModel from "@/app/models/userModel";
-import { NextResponse } from "next/server";
-import crypto from "crypto";
-import EmailVerificationToken from "@/app/models/emailVerificationToken";
-import nodemailer from "nodemailer";
+import startDb from '@/app/lib/db';
+import UserModel from '@/app/models/userModel';
+import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
+import EmailVerificationToken from '@/app/models/emailVerificationToken';
+import nodemailer from 'nodemailer';
 
 interface ForgotPasswordRequest {
   email: string;
@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
       message: "This email doesn't exist in our database.",
     });
 
-  const token = crypto.randomBytes(36).toString("hex");
+  const token = crypto.randomBytes(36).toString('hex');
 
   EmailVerificationToken.create({
     user: user._id,
@@ -33,18 +33,18 @@ export const POST = async (req: Request) => {
   });
 
   const transport = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
+    host: 'sandbox.smtp.mailtrap.io',
     port: 2525,
     auth: {
-      user: "24d1b62fbb8a5d",
-      pass: "d9c73e0f1697d3",
+      user: '24d1b62fbb8a5d',
+      pass: 'd9c73e0f1697d3',
     },
   });
 
   const verificationUrl = `${process.env.HOST}/reset-password?token=${token}&userId=${user._id}`;
 
   transport.sendMail({
-    from: "verification@claviswholesale.com",
+    from: 'verification@claviswholesale.com',
     to: user.email,
     html: `<p>Please verify your email by clicking <a href="${verificationUrl}">this link</a></p>`,
   });
@@ -52,6 +52,6 @@ export const POST = async (req: Request) => {
   return NextResponse.json({
     ok: true,
     message:
-      "A link to reset password has been sent. Please check your mailbox.",
+      'A link to reset password has been sent. Please check your mailbox.',
   });
 };
