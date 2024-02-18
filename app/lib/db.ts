@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 let connection: typeof mongoose;
 
-const url = "mongodb://127.0.0.1:27017/wholesale";
+const url = 'mongodb://127.0.0.1:27017/wholesale';
 const startDb = async () => {
   try {
     if (!connection) {
-      connection = await mongoose.connect(url);
+      connection = await mongoose.connect(process.env.MONGODB_URL || url);
     }
     return connection;
   } catch (error) {
