@@ -3,7 +3,9 @@
 # dependencies
 /node_modules
 /node_modules/*
-!/node_modules/bcrypt 
+!/node_modules/bcrypt
+!/node_modules/bcrypt/*
+
 /.pnp
 .pnp.js
 .yarn/install-state.gz
