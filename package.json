@@ -17,6 +17,7 @@
     "mongoose": "^8.1.2",
     "next": "14.1.0",
     "next-auth": "^5.0.0-beta.3",
+    "node": "^20.10.0",
     "nodemailer": "^6.9.9",
     "react": "^18",
     "react-dom": "^18",
@@ -25,6 +26,7 @@
     "react-toastify": "^10.0.4"
   },
   "devDependencies": {
+    "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
