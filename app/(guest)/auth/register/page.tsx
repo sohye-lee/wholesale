@@ -1,4 +1,4 @@
-import Container from '@/app/components/UI/container/page';
+import Container from '@/app/components/UI/container/container';
 import SignUpForm from '@/app/components/forms/signupForm';
 import React from 'react';
 

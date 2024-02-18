@@ -1,12 +1,23 @@
 'use client';
-import Button from '@/app/components/UI/button/page';
-import Container from '@/app/components/UI/container/page';
+import Button from '@/app/components/UI/button/button';
+import Container from '@/app/components/UI/container/container';
+import Loading from '@/app/components/loading';
 import useRequest from '@/app/hooks/useRequest';
 import { notFound, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 export default function VerifyPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Container width="small">
+        <Verify />
+      </Container>
+    </Suspense>
+  );
+}
+
+function Verify() {
   const params = useSearchParams();
   const userId = params.get('userId');
   const token = params.get('token');
@@ -28,31 +39,33 @@ export default function VerifyPage() {
     data?.ok && toast.success(data?.message);
   }, [data?.error, data?.message, data?.ok, token, userId, verifyToken]);
   return (
-    <Container width="small">
-      <div className=" h-[calc(100vh-260px)] w-full flex items-center justify-center">
-        {loading ? (
-          <h3 className="text-xl font-medium text-center animate-pulse">
-            Please wait...
-            <br />
-            we are verifying your account.
-          </h3>
-        ) : (
-          <h3 className="text-xl font-medium text-center">
-            {data?.message || data?.error}
-            {data?.ok && (
-              <Button
-                size="small"
-                mode="neutral"
-                button={false}
-                link="/auth/login"
-                addClass="mt-4"
-              >
-                Login
-              </Button>
-            )}
-          </h3>
-        )}
-      </div>
-    </Container>
+    // <Suspense fallback={<Loading />}>
+    //   <Container width="small">
+    <div className=" h-[calc(100vh-260px)] w-full flex items-center justify-center">
+      {loading ? (
+        <h3 className="text-xl font-medium text-center animate-pulse">
+          Please wait...
+          <br />
+          we are verifying your account.
+        </h3>
+      ) : (
+        <h3 className="text-xl font-medium text-center">
+          {data?.message || data?.error}
+          {data?.ok && (
+            <Button
+              size="small"
+              mode="neutral"
+              button={false}
+              link="/auth/login"
+              addClass="mt-4"
+            >
+              Login
+            </Button>
+          )}
+        </h3>
+      )}
+    </div>
+    //   </Container>
+    // </Suspense>
   );
 }

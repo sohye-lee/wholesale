@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
-import Navbar from '@components/UI/navbar/page';
-import Footer from '@components/UI/footer/page';
-import Notification from '@components/UI/notification/page';
+import Navbar from '@/app/components/UI/navbar/navbar';
+import Footer from '@/app/components/UI/footer/footer';
+import Notification from '@/app/components/UI/notification/notification';
 import { SessionProvider } from 'next-auth/react';
 import NotificationProvider from './contexts/notificationContext';
-import Alert from '@components/UI/alert/page';
+import Alert from '@/app/components/UI/alert/alert';
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] });
 

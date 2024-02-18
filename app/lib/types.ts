@@ -23,6 +23,17 @@ export interface ProfileInfoProps {
   isAdmin?: boolean;
 }
 
+export interface ButtonType {
+  children: React.ReactNode;
+  mode: 'CTA' | 'save' | 'success' | 'danger' | 'neutral';
+  size: 'xsmall' | 'small' | 'medium' | 'large';
+  link?: string;
+  addClass?: string;
+  loading?: boolean;
+  disabled?: boolean;
+  [key: string]: any;
+}
+
 // Requests
 
 export interface NewUserRequest {

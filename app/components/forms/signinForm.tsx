@@ -2,7 +2,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Input from './input';
-import Button from '../UI/button/page';
+import Button from '../UI/button/button';
 import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';

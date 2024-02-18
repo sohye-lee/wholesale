@@ -1,4 +1,4 @@
-import Container from '@components/UI/container/page';
+import Container from '@/app/components/UI/container/container';
 
 export default function Home() {
   return (

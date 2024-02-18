@@ -1,6 +1,6 @@
-import Container from "@/app/components/UI/container/page";
-import ForgotPasswordForm from "@/app/components/forms/forgotPasswordForm";
-import React from "react";
+import Container from '@/app/components/UI/container/container';
+import ForgotPasswordForm from '@/app/components/forms/forgotPasswordForm';
+import React from 'react';
 
 export default function SignInPage() {
   return (

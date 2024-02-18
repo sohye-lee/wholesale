@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useState } from 'react';
 import { NotificationMode, NotificationProps } from '@lib/types';
-import Notification from '../components/UI/notification/page';
+import Notification from '../components/UI/notification/notification';
 
 export const NotificationContext = createContext({
   notification: {

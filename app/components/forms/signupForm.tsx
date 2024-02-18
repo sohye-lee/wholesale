@@ -1,13 +1,13 @@
-"use client";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import Input from "./input";
-import Button from "../UI/button/page";
-import Link from "next/link";
-import useRequest from "@/app/hooks/useRequest";
-import { NewUserRequest } from "@/app/lib/types";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+'use client';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import Input from './input';
+import Button from '../UI/button/button';
+import Link from 'next/link';
+import useRequest from '@/app/hooks/useRequest';
+import { NewUserRequest } from '@/app/lib/types';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -16,11 +16,11 @@ export default function SignUpForm() {
     register,
     watch,
     formState: { errors },
-  } = useForm<NewUserRequest>({ mode: "onBlur" });
+  } = useForm<NewUserRequest>({ mode: 'onBlur' });
 
   const [createUser, { data, error, loading }] = useRequest(
-    "/api/users",
-    "POST"
+    '/api/users',
+    'POST'
   );
 
   const onValid = (validForm: NewUserRequest) => {
@@ -28,7 +28,7 @@ export default function SignUpForm() {
   };
 
   useEffect(() => {
-    data && data?.user && router.push("/");
+    data && data?.user && router.push('/');
     data?.ok && toast.success(data?.message);
   }, [data, data?.user, router]);
 
@@ -45,7 +45,7 @@ export default function SignUpForm() {
       <Input
         placeholder="name"
         name="name"
-        register={register("name", { required: "This field is required." })}
+        register={register('name', { required: 'This field is required.' })}
         type="text"
         required={true}
         errorMessage={errors.name?.message || null}
@@ -53,7 +53,7 @@ export default function SignUpForm() {
       <Input
         placeholder="email"
         name="email"
-        register={register("email", { required: "This field is required." })}
+        register={register('email', { required: 'This field is required.' })}
         type="email"
         required={true}
         errorMessage={errors.email?.message || null}
@@ -61,7 +61,7 @@ export default function SignUpForm() {
       <Input
         placeholder="password"
         name="password"
-        register={register("password", { required: "This field is required." })}
+        register={register('password', { required: 'This field is required.' })}
         type="password"
         required={true}
         errorMessage={errors.password?.message || null}
@@ -72,7 +72,7 @@ export default function SignUpForm() {
         button={true}
         size="medium"
         loading={loading}
-        disabled={!watch("name") && !watch("email") && !watch("password")}
+        disabled={!watch('name') && !watch('email') && !watch('password')}
       >
         Create
       </Button>

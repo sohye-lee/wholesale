@@ -1,16 +1,16 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import Logo from "@/public/logo-black.svg";
-import NavItem from "./navItem";
-import { DropdownItemProps, NavbarProps } from "@/app/lib/types";
-import { IconShoppingBag } from "@tabler/icons-react";
-import Button from "../button/page";
-import CartItem from "./cartItem";
-import MobileNav from "./mobileNav";
-import { catalogDropdown } from "./dropdownItemLists";
-import useAuth from "@/app/hooks/useAuth";
-import ProfileInfo from "./profileInfo";
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import Logo from '@/public/logo-black.svg';
+import NavItem from './navItem';
+import { DropdownItemProps, NavbarProps } from '@/app/lib/types';
+import { IconShoppingBag } from '@tabler/icons-react';
+import Button from '../button/button';
+import CartItem from './cartItem';
+import MobileNav from './mobileNav';
+import { catalogDropdown } from './dropdownItemLists';
+import useAuth from '@/app/hooks/useAuth';
+import ProfileInfo from './profileInfo';
 
 export default function Navbar({ cartItemsCount }: NavbarProps) {
   const { loading, loggedIn, isAdmin } = useAuth();

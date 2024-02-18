@@ -1,12 +1,12 @@
-"use client";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import Input from "./input";
-import Button from "../UI/button/page";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useRouter, redirect, useSearchParams } from "next/navigation";
-import useRequest from "@/app/hooks/useRequest";
+'use client';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import Input from './input';
+import Button from '../UI/button/button';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useRouter, redirect, useSearchParams } from 'next/navigation';
+import useRequest from '@/app/hooks/useRequest';
 
 interface ResetPasswordForm {
   password: string;
@@ -16,8 +16,8 @@ interface ResetPasswordForm {
 }
 export default function ResetPasswordForm() {
   const params = useSearchParams();
-  const token = params.get("token");
-  const userId = params.get("userId");
+  const token = params.get('token');
+  const userId = params.get('userId');
 
   const router = useRouter();
   const session = useSession();
@@ -26,11 +26,11 @@ export default function ResetPasswordForm() {
     register,
     formState: { errors },
     watch,
-  } = useForm<ResetPasswordForm>({ mode: "onBlur" });
+  } = useForm<ResetPasswordForm>({ mode: 'onBlur' });
 
   const [resetPassword, { data, error, loading }] = useRequest(
     `/api/users/reset-password`,
-    "PUT"
+    'PUT'
   );
 
   const onValid = async (validForm: ResetPasswordForm) => {
@@ -38,9 +38,9 @@ export default function ResetPasswordForm() {
   };
 
   useEffect(() => {
-    session?.data?.user && redirect("/");
+    session?.data?.user && redirect('/');
 
-    data && data?.ok && redirect("/auth/login");
+    data && data?.ok && redirect('/auth/login');
   }, [data, session.data]);
   return (
     <form
@@ -54,8 +54,8 @@ export default function ResetPasswordForm() {
       <Input
         placeholder="password"
         name="password"
-        register={register("password", {
-          required: "Please write your new password.",
+        register={register('password', {
+          required: 'Please write your new password.',
         })}
         type="password"
         required={true}
@@ -64,11 +64,11 @@ export default function ResetPasswordForm() {
       <Input
         placeholder="confirm password"
         name="confirmpassword"
-        register={register("confirmpassword", {
-          required: "Please confirm your password.",
+        register={register('confirmpassword', {
+          required: 'Please confirm your password.',
           validate: (val: string) => {
-            if (watch("password") != val) {
-              return "Your passwords do no match.";
+            if (watch('password') != val) {
+              return 'Your passwords do no match.';
             }
           },
         })}
@@ -76,8 +76,8 @@ export default function ResetPasswordForm() {
         required={true}
         errorMessage={errors.confirmpassword?.message || null}
       />
-      <input hidden {...register("userId")} value={userId + ""} />
-      <input hidden {...register("token")} value={token + ""} />
+      <input hidden {...register('userId')} value={userId + ''} />
+      <input hidden {...register('token')} value={token + ''} />
       <Button
         mode="CTA"
         addClass="w-full py-3"
