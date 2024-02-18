@@ -3,8 +3,7 @@
 # dependencies
 /node_modules
 /node_modules/*
-!/node_modules/bcrypt
-!/node_modules/bcrypt/*
+
 
 /.pnp
 .pnp.js
@@ -39,3 +38,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+ 
+*.env 
+.env* 
+*.local
+
+
+!/node_modules/bcrypt
+!/node_modules/bcrypt/*
+ 
