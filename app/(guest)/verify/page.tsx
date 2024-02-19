@@ -1,12 +1,14 @@
-'use client';
-import Button from '@/app/components/UI/button/button';
-import Container from '@/app/components/UI/container/container';
-import Loading from '@/app/components/loading';
-import useRequest from '@/app/hooks/useRequest';
-import { notFound, useSearchParams } from 'next/navigation';
-import React, { Suspense, useEffect } from 'react';
-import { toast } from 'react-toastify';
+"use client";
+import Button from "@/app/components/UI/button/button";
+import Container from "@/app/components/UI/container/container";
+import Loading from "@/app/components/loading";
+import useRequest from "@/app/hooks/useRequest";
+import { signIn } from "next-auth/react";
+import { notFound, useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect } from "react";
+import { toast } from "react-toastify";
 
+interface PageProps {}
 export default function VerifyPage() {
   return (
     <Suspense fallback={<Loading />}>
@@ -19,11 +21,12 @@ export default function VerifyPage() {
 
 function Verify() {
   const params = useSearchParams();
-  const userId = params.get('userId');
-  const token = params.get('token');
+  const router = useRouter();
+  const userId = params.get("userId");
+  const token = params.get("token");
   const [verifyToken, { data, error, loading }] = useRequest(
     `/api/users/verify`,
-    'POST'
+    "POST"
   );
 
   if (!userId || !token) return notFound();
@@ -34,10 +37,8 @@ function Verify() {
       userId,
       token,
     });
-    // error && toast.error(new Error(error as any).message);
-    data?.error && toast.error(data?.error);
-    data?.ok && toast.success(data?.message);
-  }, [data?.error, data?.message, data?.ok, token, userId, verifyToken]);
+    data?.ok ? toast.success(data?.message) : toast.error(data?.message);
+  }, []);
   return (
     // <Suspense fallback={<Loading />}>
     //   <Container width="small">
@@ -50,7 +51,7 @@ function Verify() {
         </h3>
       ) : (
         <h3 className="text-xl font-medium text-center">
-          {data?.message || data?.error}
+          {data?.message}
           {data?.ok && (
             <Button
               size="small"
