@@ -3,7 +3,6 @@ import Button from "@/app/components/UI/button/button";
 import Container from "@/app/components/UI/container/container";
 import Loading from "@/app/components/loading";
 import useRequest from "@/app/hooks/useRequest";
-import { signIn } from "next-auth/react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -40,8 +39,6 @@ function Verify() {
     data?.ok ? toast.success(data?.message) : toast.error(data?.message);
   }, []);
   return (
-    // <Suspense fallback={<Loading />}>
-    //   <Container width="small">
     <div className=" h-[calc(100vh-260px)] w-full flex items-center justify-center">
       {loading ? (
         <h3 className="text-xl font-medium text-center animate-pulse">
@@ -66,7 +63,5 @@ function Verify() {
         </h3>
       )}
     </div>
-    //   </Container>
-    // </Suspense>
   );
 }
