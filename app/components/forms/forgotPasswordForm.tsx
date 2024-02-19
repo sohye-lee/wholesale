@@ -59,7 +59,6 @@ export default function ForgotPasswordForm() {
       <Button
         mode="neutral"
         addClass="w-full py-3"
-        button={false}
         link="/auth/login"
         size="medium"
       >
@@ -68,7 +67,6 @@ export default function ForgotPasswordForm() {
       <Button
         mode="neutral"
         addClass="w-full py-3"
-        button={false}
         link="/auth/register"
         size="medium"
       >

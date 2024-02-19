@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import EmailVerificationToken from '@/app/models/emailVerificationToken';
 import nodemailer from 'nodemailer';
+import { EmailOptions } from '@/app/lib/types';
+import { sendEmail } from '@/app/lib/functions';
 
 interface ForgotPasswordRequest {
   email: string;
@@ -32,22 +34,31 @@ export const POST = async (req: Request) => {
     token,
   });
 
-  const transport = nodemailer.createTransport({
-    host: 'sandbox.smtp.mailtrap.io',
-    port: 2525,
-    auth: {
-      user: '24d1b62fbb8a5d',
-      pass: 'd9c73e0f1697d3',
+  // const transport = nodemailer.createTransport({
+  //   host: 'sandbox.smtp.mailtrap.io',
+  //   port: 2525,
+  //   auth: {
+  //     user: '24d1b62fbb8a5d',
+  //     pass: 'd9c73e0f1697d3',
+  //   },
+  // });
+
+  // const verificationUrl = `${process.env.HOST}/reset-password?token=${token}&userId=${user._id}`;
+
+  // transport.sendMail({
+  //   from: 'verification@claviswholesale.com',
+  //   to: user.email,
+  //   html: `<p>To reset your password, please open <a href="${verificationUrl}">this link</a> and update your password.</p>`,
+  // });
+
+  const options: EmailOptions = {
+    profile: {
+      name: user?.name!,
+      email: user?.email!,
     },
-  });
-
-  const verificationUrl = `${process.env.HOST}/reset-password?token=${token}&userId=${user._id}`;
-
-  transport.sendMail({
-    from: 'verification@claviswholesale.com',
-    to: user.email,
-    html: `<p>Please verify your email by clicking <a href="${verificationUrl}">this link</a></p>`,
-  });
+    subject: 'forgot-password',
+  };
+  sendEmail(options);
 
   return NextResponse.json({
     ok: true,

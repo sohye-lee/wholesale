@@ -69,7 +69,6 @@ export default function SignUpForm() {
       <Button
         mode="CTA"
         addClass="w-full py-3"
-        button={true}
         size="medium"
         loading={loading}
         disabled={!watch('name') && !watch('email') && !watch('password')}
@@ -79,7 +78,6 @@ export default function SignUpForm() {
       <Button
         mode="neutral"
         addClass="w-full py-3"
-        button={false}
         link="/auth/login"
         size="medium"
       >

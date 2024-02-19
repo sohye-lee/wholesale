@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Input from './input';
 import Button from '../UI/button/button';
@@ -7,12 +7,8 @@ import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { useRouter, redirect } from 'next/navigation';
-// import useNotification from '@/app/hooks/useNotification';
 
-import {
-  NotificationContext,
-  useNotification,
-} from '@/app/contexts/notificationContext';
+import { useNotification } from '@/app/contexts/notificationContext';
 import { NotificationProps } from '@/app/lib/types';
 
 interface SigninFormProps {
@@ -22,8 +18,7 @@ interface SigninFormProps {
 export default function SignInForm() {
   const router = useRouter();
   const session = useSession();
-  // const { notify } = useNotification();
-  // const { close, notify } = useContext(NotificationContext);
+
   const { notify, close } = useNotification();
 
   const {
@@ -35,26 +30,22 @@ export default function SignInForm() {
   const onValid = async (validForm: SigninFormProps) => {
     const res = await signIn('credentials', { ...validForm, redirect: false });
     if (res?.error == 'CredentialsSignin') {
-      const notification: NotificationProps = {
-        mode: 'error',
-        message: 'The password does not match.',
-        timeout: 5,
-        handleClose: close,
-      };
-      notify(notification);
-      // notify({ mode: 'error', message: 'The password does not match.' });
+      // const notification: NotificationProps = {
+      //   mode: 'error',
+      //   message: 'The password does not match.',
+      //   timeout: 5,
+      //   handleClose: close,
+      // };
       toast.error('The password does not match.');
     }
     if (!res?.error) {
       router.refresh();
-      // notify({ mode: 'success', message: 'Successfully logged in!' });
-      const notification: NotificationProps = {
-        mode: 'success',
-        message: 'Successfully logged in!',
-        timeout: 5,
-        handleClose: close,
-      };
-      notify(notification);
+      // const notification: NotificationProps = {
+      //   mode: 'success',
+      //   message: 'Successfully logged in!',
+      //   timeout: 5,
+      //   handleClose: close,
+      // };
       toast.success('Successfully logged in!');
     }
   };
@@ -91,13 +82,12 @@ export default function SignInForm() {
         required={true}
         errorMessage={errors.password?.message || null}
       />
-      <Button mode="CTA" addClass="w-full py-3" button={true} size="medium">
+      <Button mode="CTA" addClass="w-full py-3" size="medium">
         Login
       </Button>
       <Button
         mode="neutral"
         addClass="w-full py-3"
-        button={false}
         link="/auth/register"
         size="medium"
       >

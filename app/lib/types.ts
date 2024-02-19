@@ -74,3 +74,14 @@ export interface NotificationProps {
   timeout: number;
   handleClose: () => void;
 }
+
+export type Profile = {
+  name: string;
+  email: string;
+};
+
+export interface EmailOptions {
+  profile: Profile;
+  subject: 'verification' | 'forgot-password' | 'password-changed';
+  linkUrl?: string;
+}

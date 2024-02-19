@@ -78,13 +78,7 @@ export default function ResetPasswordForm() {
       />
       <input hidden {...register('userId')} value={userId + ''} />
       <input hidden {...register('token')} value={token + ''} />
-      <Button
-        mode="CTA"
-        addClass="w-full py-3"
-        button={true}
-        size="medium"
-        loading={loading}
-      >
+      <Button mode="CTA" addClass="w-full py-3" size="medium" loading={loading}>
         Reset Password
       </Button>
 

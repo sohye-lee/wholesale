@@ -1,10 +1,11 @@
-import { NewUserRequest } from '@/app/lib/types';
+import { EmailOptions, NewUserRequest } from '@/app/lib/types';
 import EmailVerificationToken from '@models/emailVerificationToken';
 import UserModel from '@/app/models/userModel';
 import startDb from '@lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import { sendEmail } from '@/app/lib/functions';
 
 export const GET = async (req: Request) => {
   await startDb();
@@ -31,31 +32,40 @@ export const POST = async (req: Request) => {
         'This email already exists. Please try again with another email.',
     });
 
-  const newUser = await UserModel.create({ ...body });
+  const user = await UserModel.create({ ...body });
 
   const token = crypto.randomBytes(36).toString('hex');
 
   EmailVerificationToken.create({
-    user: newUser._id,
+    user: user._id,
     token,
   });
 
-  const transport = nodemailer.createTransport({
-    host: 'sandbox.smtp.mailtrap.io',
-    port: 2525,
-    auth: {
-      user: '24d1b62fbb8a5d',
-      pass: 'd9c73e0f1697d3',
+  // const transport = nodemailer.createTransport({
+  //   host: 'sandbox.smtp.mailtrap.io',
+  //   port: 2525,
+  //   auth: {
+  //     user: '24d1b62fbb8a5d',
+  //     pass: 'd9c73e0f1697d3',
+  //   },
+  // });
+
+  // const verificationUrl = `${process.env.HOST}/verify?token=${token}&userId=${user._id}`;
+
+  // transport.sendMail({
+  //   from: 'verification@claviswholesale.com',
+  //   to: user.email,
+  //   html: `<p>Please verify your email by clicking <a href="${verificationUrl}">this link</a></p>`,
+  // });
+
+  const options: EmailOptions = {
+    profile: {
+      name: user?.name!,
+      email: user?.email!,
     },
-  });
-
-  const verificationUrl = `${process.env.HOST}/verify?token=${token}&userId=${newUser._id}`;
-
-  transport.sendMail({
-    from: 'verification@claviswholesale.com',
-    to: newUser.email,
-    html: `<p>Please verify your email by clicking <a href="${verificationUrl}">this link</a></p>`,
-  });
+    subject: 'password-changed',
+  };
+  sendEmail(options);
 
   return NextResponse.json({
     ok: true,

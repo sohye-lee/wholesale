@@ -1,4 +1,6 @@
 import startDb from '@/app/lib/db';
+import { sendEmail } from '@/app/lib/functions';
+import { EmailOptions } from '@/app/lib/types';
 import EmailVerificationToken from '@/app/models/emailVerificationToken';
 import UserModel from '@/app/models/userModel';
 import { NextRequest, NextResponse } from 'next/server';
@@ -42,6 +44,15 @@ export const PUT = async (req: Request) => {
   const user = await UserModel.findByIdAndUpdate(userId, {
     password,
   });
+
+  const options: EmailOptions = {
+    profile: {
+      name: user?.name!,
+      email: user?.email!,
+    },
+    subject: 'password-changed',
+  };
+  sendEmail(options);
 
   return NextResponse.json({
     ok: true,
