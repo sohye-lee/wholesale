@@ -1,9 +1,9 @@
-import startDb from "@/app/lib/db";
-import EmailVerificationToken from "@/app/models/emailVerificationToken";
-import UserModel from "@/app/models/userModel";
-import { EmailVerifyRequest } from "@lib/types";
-import { isValidObjectId } from "mongoose";
-import { NextResponse } from "next/server";
+import startDb from '@/app/lib/db';
+import EmailVerificationToken from '@/app/models/emailVerificationToken';
+import UserModel from '@/app/models/userModel';
+import { EmailVerifyRequest } from '@lib/types';
+import { isValidObjectId } from 'mongoose';
+import { NextResponse } from 'next/server';
 
 export const POST = async (req: Request) => {
   await startDb();
@@ -12,7 +12,7 @@ export const POST = async (req: Request) => {
 
     if (!isValidObjectId(userId) || !token) {
       return NextResponse.json(
-        { error: "Invalid request. A valid token is required!" },
+        { error: 'Invalid request. A valid token is required!' },
         { status: 401 }
       );
     }
@@ -20,7 +20,6 @@ export const POST = async (req: Request) => {
       user: userId,
     });
 
-    console.log("token found: ", foundToken);
     // if (!foundToken) {
     //   return NextResponse.json({ error: "Invalid token." }, { status: 401 });
     // }
@@ -49,13 +48,13 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json({
       ok: true,
-      message: "Your email has been verified!",
+      message: 'Your email has been verified!',
     });
   } catch (error) {
     return NextResponse.json({
       ok: false,
-      error: "Could not verify your email.",
-      message: "Could not verify your email.",
+      error: 'Could not verify your email.',
+      message: 'Could not verify your email.',
     });
   }
 };

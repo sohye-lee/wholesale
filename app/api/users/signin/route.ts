@@ -34,8 +34,6 @@ export const POST = async (req: Request) => {
       });
     }
 
-    console.log('sign in completed: ', existingUser);
-
     return NextResponse.json({
       ok: true,
       message: 'Successfully logged in!',
