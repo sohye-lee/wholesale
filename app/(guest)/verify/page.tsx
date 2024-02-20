@@ -3,8 +3,10 @@ import Button from "@/app/components/UI/button/button";
 import Container from "@/app/components/UI/container/container";
 import Loading from "@/app/components/loading";
 import useRequest from "@/app/hooks/useRequest";
+import { UserDocument } from "@/app/lib/types";
+import { signIn } from "next-auth/react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface PageProps {}
@@ -28,14 +30,30 @@ function Verify() {
     "POST"
   );
 
+  const [user, setUser] = useState<UserDocument>();
+
   if (!userId || !token) return notFound();
 
+  // const onClick = async () => {
+  //   await signIn("credentials", {
+  //     email: user?.email,
+  //     password: user?.password,
+  //   });
+  // };
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     verifyToken({
       userId,
       token,
     });
+    // data?.ok && data?.user && setUser(data?.user);
+
+    // fetch(`/api/users/${userId}`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setUser(data?.user);
+    //   });
+
     data?.ok ? toast.success(data?.message) : toast.error(data?.message);
   }, []);
   return (
@@ -56,6 +74,7 @@ function Verify() {
               button={false}
               link="/auth/login"
               addClass="mt-4"
+              // onClick={onClick}
             >
               Login
             </Button>

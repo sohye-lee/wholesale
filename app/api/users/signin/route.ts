@@ -1,7 +1,7 @@
-import startDb from '@/app/lib/db';
-import { SignInCredential } from '@/app/lib/types';
-import UserModel from '@/app/models/userModel';
-import { NextResponse } from 'next/server';
+import startDb from "@/app/lib/db";
+import { SignInCredential } from "@/app/lib/types";
+import UserModel from "@/app/models/userModel";
+import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   try {
@@ -10,7 +10,7 @@ export const POST = async (req: Request) => {
       return NextResponse.json(
         {
           ok: false,
-          message: 'Email or password missing. Please retry.',
+          message: "Email or password missing. Please retry.",
         },
         { status: 401 }
       );
@@ -30,13 +30,13 @@ export const POST = async (req: Request) => {
     if (!verified) {
       return NextResponse.json({
         ok: false,
-        message: 'The password does not match.',
+        message: "The password does not match.",
       });
     }
 
     return NextResponse.json({
       ok: true,
-      message: 'Successfully logged in!',
+      message: "Successfully logged in!",
       user: existingUser,
     });
   } catch (error) {

@@ -1,12 +1,9 @@
-import { UserDocument } from '@/app/lib/types';
-import { Session } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
+import { SessionUserProfile } from "@/app/lib/types";
+import { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
-    user: UserDocument;
+    user: SessionUserProfile;
   }
-  // interface User extends UserDocument {
-  //   role: string;
-  // }
 }
