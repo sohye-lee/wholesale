@@ -1,9 +1,9 @@
-'use client';
-import { DropdownItemProps } from '@/app/lib/types';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import DropdownItem from './dropdownItem';
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+"use client";
+import { DropdownItemProps } from "@/app/lib/types";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import DropdownItem from "./dropdownItem";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 
 interface NavItemProps {
   link: string;
@@ -34,17 +34,17 @@ export default function NavItem({
     <div className="relative group">
       <Link
         href={link}
-        className={`relative uppercase py-4 text-sm inline-flex items-center gap-2  ${addClass}`}
+        className={`relative uppercase py-3 text-[14px] lg:text-sm inline-flex items-center gap-2  ${addClass}`}
       >
         {children}
         <div
           className={`absolute bottom-3 left-0 w-full h-[2px] bg-stone-700 scale-x-0 group-hover:scale-x-100 transition-all ${
-            active && 'scale-x-100'
+            active && "scale-x-100"
           }`}
         ></div>
         <button
           className={`absolute -right-6 top-[50%] -translate-y-[50%] lg:hidden ${
-            !dropdownItems && 'hidden'
+            !dropdownItems && "hidden"
           } `}
           onClick={handleDropdown}
           ref={ref}
@@ -73,7 +73,7 @@ export default function NavItem({
           </div>
           <div
             className={`lg:hidden transition-all flex-col ${
-              dropdownOpen ? 'flex py-3' : 'hidden'
+              dropdownOpen ? "flex py-3" : "hidden"
             }`}
           >
             {dropdownItems &&

@@ -49,6 +49,7 @@ export const authConfig: NextAuthConfig = {
           email: user.email,
           verified: user.verified,
           avatar: user.avatar,
+          role: user.role,
         };
       }
       return params.session;

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/app/components/UI/navbar/navbar";
-import Footer from "@/app/components/UI/footer/footer";
+import "@app/globals.css";
+import Footer from "@components/UI/footer/footer";
 import { SessionProvider } from "next-auth/react";
+import Navbar from "@components/UI/navbar/navbar";
 
 const work_sans = Work_Sans({ subsets: ["latin"] });
 
@@ -20,11 +20,7 @@ export default function RootLayout({
   return (
     <SessionProvider>
       <html lang="en">
-        <body className={work_sans.className}>
-          <Navbar cartItemsCount={0} />
-          {children}
-          <Footer />
-        </body>
+        <body className={`${work_sans.className} m-0 p-0`}>{children}</body>
       </html>
     </SessionProvider>
   );

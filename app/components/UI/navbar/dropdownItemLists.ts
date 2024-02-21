@@ -17,7 +17,7 @@ export const catalogDropdown: DropdownItemProps[] = [
 export const profileDropdown: DropdownItemProps[] = [
   { link: "/profile", text: "Profile", dropdownIcon: IconUser, isAdmin: false },
   {
-    link: "/admin/dashboard",
+    link: "/admin",
     text: "Dashboard",
     dropdownIcon: IconGraph,
     isAdmin: true,
