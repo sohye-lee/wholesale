@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import Logo from "@/public/logo-white.svg";
-import Link from "next/link";
-import Image from "next/image";
+'use client';
+import React from 'react';
+import Logo from '@/public/logo-white.svg';
+import Link from 'next/link';
+import Image from 'next/image';
 import {
   IconHome2,
   IconDashboard,
@@ -13,11 +13,13 @@ import {
   IconShoppingBag,
   IconFolder,
   IconLogout,
-} from "@tabler/icons-react";
-import SignOutButton from "@components/forms/signoutButton";
-import AdminMobileNav from "./adminMobileNav";
-import useAuth from "@/app/hooks/useAuth";
-import Button from "../button/button";
+  IconFolders,
+  IconBox,
+} from '@tabler/icons-react';
+import SignOutButton from '@components/forms/signoutButton';
+import AdminMobileNav from './adminMobileNav';
+import useAuth from '@/app/hooks/useAuth';
+import Button from '../button/button';
 
 export default function AdminSidebar() {
   const { loggedIn } = useAuth();
@@ -25,15 +27,22 @@ export default function AdminSidebar() {
     <>
       <div className="fixed z-50 left-0 top-0 min-w-[200px] hidden lg:flex flex-col justify-between gap-3 h-screen bg-stone-800">
         <div className="w-full px-4 py-8 flex flex-col gap-3">
-          <Link href="/admin">
+          <Link href="/admin/dashboard">
             <Image alt="logo" src={Logo} width={100} height={30} />
           </Link>
           <Link
-            href="/"
+            href="/admin/dashboard"
             className="w-full flex items-center gap-3 text-white hover:text-amber-400 text-sm uppercase mt-8"
           >
-            <IconDashboard width={20} />
+            <IconFolders width={20} />
             <span>Dashboard</span>
+          </Link>
+          <Link
+            href="/admin/categories"
+            className="w-full flex items-center gap-3 text-white hover:text-amber-400  text-sm uppercase"
+          >
+            <IconBox width={20} />
+            <span>Categories</span>
           </Link>
           <Link
             href="/admin/products"

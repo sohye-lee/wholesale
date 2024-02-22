@@ -25,7 +25,9 @@
     "react-dom": "^18",
     "react-form-hook": "^0.0.1",
     "react-hook-form": "^7.50.1",
-    "react-toastify": "^10.0.4"
+    "react-toastify": "^10.0.4",
+    "swr": "^2.2.5",
+    "truncate": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^18",

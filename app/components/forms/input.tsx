@@ -6,7 +6,7 @@ interface InputProps {
   required: boolean;
   type: 'text' | 'email' | 'password' | 'phone' | 'number' | 'textarea';
   placeholder?: string;
-  errorMessage: string | null;
+  errorMessage?: string | null;
   addClass?: string;
 }
 
@@ -20,7 +20,7 @@ export default function Input({
   addClass,
 }: InputProps) {
   return (
-    <div className="w-full flex flex-col gap-1 group relative">
+    <div className="w-full flex flex-col group relative">
       {type != 'textarea' ? (
         <input
           id={name}
@@ -40,7 +40,7 @@ export default function Input({
         ></textarea>
       )}
       {errorMessage && (
-        <p className="text-[12px] text-red-500">{errorMessage}</p>
+        <p className="text-[12px] text-red-500 mt-1">{errorMessage}</p>
       )}
     </div>
   );

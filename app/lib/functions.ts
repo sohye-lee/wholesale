@@ -43,3 +43,5 @@ export const sendEmail = ({ profile, subject, linkUrl }: EmailOptions) => {
       break;
   }
 };
+
+const fetcher = (...args:any) => fetch(...args).then(res => res.json())

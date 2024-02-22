@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   IconLogout2,
   IconMenu,
@@ -12,16 +12,16 @@ import {
   IconShoppingBag,
   IconFolder,
   IconLogout,
-} from "@tabler/icons-react";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import Logo from "@/public/logo-white.svg";
-import NavItem from "@components/UI/navbar/navItem";
+} from '@tabler/icons-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useRef, useState } from 'react';
+import Logo from '@/public/logo-white.svg';
+import NavItem from '@components/UI/navbar/navItem';
 // import { catalogDropdown, profileDropdown } from './dropdownItemLists';
-import Button from "../button/button";
-import useAuth from "@/app/hooks/useAuth";
-import SignOutButton from "../../forms/signoutButton";
+import Button from '../button/button';
+import useAuth from '@/app/hooks/useAuth';
+import SignOutButton from '../../forms/signoutButton';
 
 export default function AdminMobileNav() {
   const [open, setOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function AdminMobileNav() {
   const mobileMenuBg = useRef<HTMLDivElement>(null);
 
   function assertIsNode(e: EventTarget | null): asserts e is Node {
-    if (!e || !("nodeType" in e)) {
+    if (!e || !('nodeType' in e)) {
       throw new Error(`Node expected`);
     }
   }
@@ -40,16 +40,16 @@ export default function AdminMobileNav() {
         setOpen(false);
       }
     }
-    window.addEventListener("click", handleClick);
+    window.addEventListener('click', handleClick);
 
     const onResize = () => {
       window.innerWidth >= 1024 && setOpen(false);
     };
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
 
     return () => {
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("click", handleClick);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('click', handleClick);
     };
   }, [open]);
   return (
@@ -72,7 +72,7 @@ export default function AdminMobileNav() {
       )}
       <div
         className={`h-screen bg-white py-4 px-5 fixed z-[100] top-0 right-0 min-w-[300px]  transition-transform ${
-          open ? "translate-x-0" : "translate-x-[100%]"
+          open ? 'translate-x-0' : 'translate-x-[100%]'
         }`}
       >
         <div>
@@ -85,9 +85,9 @@ export default function AdminMobileNav() {
         </div>
         <div className="flex flex-col mt-8">
           <NavItem
-            link="/admin"
+            link="/admin/dashboard"
             active={false}
-            dropdown={true}
+            dropdown={false}
             // dropdownItems={catalogDropdown}
             setOpen={setOpen}
           >
@@ -153,15 +153,8 @@ export default function AdminMobileNav() {
             <div className=" ">
               {loggedIn ? (
                 <SignOutButton>
-                  <NavItem
-                    link="#"
-                    active={false}
-                    dropdown={false}
-                    setOpen={setOpen}
-                  >
-                    <IconLogout2 width={16} />
-                    Logout
-                  </NavItem>
+                  <IconLogout2 width={16} />
+                  Logout
                 </SignOutButton>
               ) : (
                 <div className="flex items-center gap-3">

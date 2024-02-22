@@ -21,3 +21,26 @@ h5,
 h6 {
   font-family: 'Cormorant Garamond', serif;
 }
+
+table * {
+  font-size: 14px;
+}
+
+td,
+th {
+  font-weight: 400;
+  padding: 12px;
+  text-align: left;
+}
+
+thead {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  color: #444444;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
