@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { EmailOptions, Profile } from "./types";
+import { Fetcher } from "swr";
 
 // Function 'sendEmail' :  sends 3 different kinds of verification emails
 const generateEmailTransport = () => {
@@ -43,5 +44,3 @@ export const sendEmail = ({ profile, subject, linkUrl }: EmailOptions) => {
       break;
   }
 };
-
-const fetcher = (...args:any) => fetch(...args).then(res => res.json())

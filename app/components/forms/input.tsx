@@ -1,10 +1,10 @@
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { UseFormRegisterReturn } from "react-hook-form";
 interface InputProps {
   [key: string]: any;
   register?: UseFormRegisterReturn;
-  name: string;
+  name?: string;
   required: boolean;
-  type: 'text' | 'email' | 'password' | 'phone' | 'number' | 'textarea';
+  type: "text" | "email" | "password" | "phone" | "number" | "textarea";
   placeholder?: string;
   errorMessage?: string | null;
   addClass?: string;
@@ -18,12 +18,13 @@ export default function Input({
   placeholder,
   errorMessage,
   addClass,
+  ...rest
 }: InputProps) {
   return (
     <div className="w-full flex flex-col group relative">
-      {type != 'textarea' ? (
+      {type != "textarea" ? (
         <input
-          id={name}
+          {...rest}
           required={required}
           {...register}
           placeholder={placeholder}
@@ -32,7 +33,7 @@ export default function Input({
         />
       ) : (
         <textarea
-          id={name}
+          {...rest}
           {...register}
           placeholder={placeholder}
           required={required}

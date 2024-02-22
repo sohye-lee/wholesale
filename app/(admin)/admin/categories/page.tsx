@@ -1,27 +1,34 @@
-'use client';
-import Button from '@/app/components/UI/button/button';
-import Container from '@/app/components/UI/container/container';
-import Input from '@/app/components/forms/input';
-import useRequest from '@/app/hooks/useRequest';
-import { CategoryDocument } from '@/app/lib/types';
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
-import useSWR from 'swr';
+"use client";
+import Button from "@/app/components/UI/button/button";
+import Container from "@/app/components/UI/container/container";
+import Input from "@/app/components/forms/input";
+import CateogryItem from "@/app/components/items/cateogryItem";
+import useRequest from "@/app/hooks/useRequest";
+import { Category, CategoryDocument } from "@/app/lib/types";
+import { IconEdit, IconPencil, IconTrash } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import useSWR from "swr";
+
+const swrfetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface CategoryCreateForm {
   name: string;
 }
 
 export default function CategoryCreatePage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CategoryCreateForm>();
   const [createCategory, { data, error, loading }] = useRequest(
-    '/api/categories',
-    'POST'
+    "/api/categories",
+    "POST"
   );
 
   const [message, setMessage] = useState<string | null>();
@@ -30,17 +37,19 @@ export default function CategoryCreatePage() {
     createCategory(validForm);
   };
 
-  const { data: categoriesData, error: categoriesError } =
-    useSWR('/api/categories');
+  const { data: categoriesData, error: categoriesError } = useSWR(
+    "/api/categories",
+    swrfetcher
+  );
 
-  const [categories, setCategories] = useState<CategoryDocument[]>(
+  const [categories, setCategories] = useState<Category[]>(
     categoriesData?.categories
   );
 
   const renderCategories =
     categories && categories.length > 0 ? (
       categories.map((c) => {
-        return <div key={c.name}>{c.name}</div>;
+        return <CateogryItem category={c} key={c._id} />;
       })
     ) : (
       <p>No category yet. Please create one.</p>
@@ -53,14 +62,21 @@ export default function CategoryCreatePage() {
       data?.ok && setMessage(null);
     }, 3000);
     categoriesData && setCategories(categoriesData.categories);
-
-    const res = fetch('/api/categories')
-      .then(async (res) => await res.json())
-      .then((data) => setCategories(data.categories));
-  }, [categoriesData, data?.message, data?.ok]);
+    categoriesData && router.refresh();
+    categoriesData && reset();
+  }, [
+    categoriesData,
+    data?.message,
+    data?.ok,
+    setCategories,
+    data?.categories,
+    categories,
+    router,
+    reset,
+  ]);
   return (
     <Container width="small">
-      <h1 className="text-2xl font-semibold mb-3">Create A Category</h1>
+      <h1 className="text-2xl font-medium mb-3">Create A Category</h1>
       <form
         className="flex items-stretch gap-1"
         onSubmit={handleSubmit(onValid)}
@@ -68,7 +84,7 @@ export default function CategoryCreatePage() {
         <Input
           type="text"
           name="name"
-          register={register('name')}
+          register={register("name")}
           required={true}
           placeholder="category name"
           errorMessage={errors.name?.message || null}

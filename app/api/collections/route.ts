@@ -1,14 +1,14 @@
 import startDb from "@/app/lib/db";
-import { CategoryDocument } from "@/app/lib/types";
-import CategoryModel from "@/app/models/categoryModel";
+import { CollectionDocument } from "@/app/lib/types";
+import CollectionModel from "@/app/models/collectionModel";
 import { NextResponse } from "next/server";
 
 export const GET = async (req: Request) => {
   try {
     await startDb();
-    const categories = await CategoryModel.find({});
+    const collections = await CollectionModel.find({});
 
-    if (!categories) {
+    if (!collections) {
       return NextResponse.json({
         ok: false,
         message: "Something went wrong.",
@@ -18,7 +18,7 @@ export const GET = async (req: Request) => {
     return NextResponse.json({
       ok: true,
       message: "Successfully loaded.",
-      categories,
+      collections,
     });
   } catch (error) {
     throw error;
@@ -28,7 +28,7 @@ export const GET = async (req: Request) => {
 export const POST = async (req: Request) => {
   try {
     await startDb();
-    const { name } = (await req.json()) as CategoryDocument;
+    const { name, description } = (await req.json()) as CollectionDocument;
 
     if (!name)
       return NextResponse.json(
@@ -39,13 +39,14 @@ export const POST = async (req: Request) => {
         { status: 401 }
       );
 
-    const category = await CategoryModel.create({
+    const collection = await CollectionModel.create({
       name,
+      description,
     });
     return NextResponse.json({
       ok: true,
       message: "Successfully created.",
-      category,
+      collection,
     });
   } catch (error) {
     throw error;
