@@ -2,11 +2,9 @@
 import Button from "@/app/components/UI/button/button";
 import Container from "@/app/components/UI/container/container";
 import Input from "@/app/components/forms/input";
-import CateogryItem from "@/app/components/items/cateogryItem";
 import CollectionItem from "@components/items/collectionItem";
 import useRequest from "@/app/hooks/useRequest";
-import { Collection, CollectionDocument } from "@/app/lib/types";
-import { IconEdit, IconPencil, IconTrash } from "@tabler/icons-react";
+import { Collection } from "@/app/lib/types";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
