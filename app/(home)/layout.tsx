@@ -9,10 +9,10 @@ interface HomeLayoutProps {
 
 export default async function HomeLayout({ children }: HomeLayoutProps) {
   return (
-    <>
+    <div className="w-full pt-10 lg:pt-16">
       <Navbar cartItemsCount={0} />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }

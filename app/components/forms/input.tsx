@@ -6,7 +6,7 @@ interface InputProps {
   required: boolean;
   type: "text" | "email" | "password" | "phone" | "number" | "textarea";
   placeholder?: string;
-  errorMessage?: string | null;
+  errorMessage?: string;
   addClass?: string;
 }
 
@@ -29,7 +29,7 @@ export default function Input({
           {...register}
           placeholder={placeholder}
           type={type}
-          className={`peer w-full border border-stone-400 px-4 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800 ${addClass}`}
+          className={`peer w-full border border-stone-400 px-3 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800 ${addClass}`}
         />
       ) : (
         <textarea
@@ -37,7 +37,7 @@ export default function Input({
           {...register}
           placeholder={placeholder}
           required={required}
-          className={`peer w-full border border-stone-300 px-4 py-2 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-amber-800 ${addClass}`}
+          className={`peer w-full border border-stone-400 px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-amber-800 ${addClass}`}
         ></textarea>
       )}
       {errorMessage && (

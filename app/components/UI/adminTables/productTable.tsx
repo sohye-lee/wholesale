@@ -1,15 +1,15 @@
-'use client';
-import React, { useState } from 'react';
-import SearchForm from '@components/forms/searchForm';
-import { Product } from '@/app/lib/types';
-import Button from '@components/UI/button/button';
+"use client";
+import React, { useState } from "react";
+import SearchForm from "@components/forms/searchForm";
+import { Product } from "@/app/lib/types";
+import Button from "@components/UI/button/button";
 import {
   IconEdit,
   IconPlus,
   IconChevronLeft,
   IconChevronRight,
-} from '@tabler/icons-react';
-import Link from 'next/link';
+} from "@tabler/icons-react";
+import Link from "next/link";
 
 interface ProductTableProps {
   products: Product[];
@@ -53,7 +53,7 @@ export default function ProductTable({
         <h1 className="text-3xl font-semibold">Products</h1>
         <div className="flex items-stretch gap-3">
           <SearchForm />
-          <Button size="small" mode="success" link="/admin/">
+          <Button size="small" mode="success" link="/admin/products/new">
             <IconPlus width={16} />
             <span className=" shrink">Add</span>
           </Button>

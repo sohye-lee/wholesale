@@ -1,6 +1,6 @@
-import Container from '@/app/components/UI/container/container';
-import SignInForm from '@/app/components/forms/signinForm';
-import React from 'react';
+import Container from "@/app/components/UI/container/container";
+import SignInForm from "@/app/components/forms/authForms/signinForm";
+import React from "react";
 
 export default function SignInPage() {
   return (

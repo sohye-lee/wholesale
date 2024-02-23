@@ -1,8 +1,8 @@
-'use client';
-import React from 'react';
-import Logo from '@/public/logo-white.svg';
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+import React from "react";
+import Logo from "@/public/logo-white.svg";
+import Link from "next/link";
+import Image from "next/image";
 import {
   IconHome2,
   IconDashboard,
@@ -15,11 +15,11 @@ import {
   IconLogout,
   IconFolders,
   IconBox,
-} from '@tabler/icons-react';
-import SignOutButton from '@components/forms/signoutButton';
-import AdminMobileNav from './adminMobileNav';
-import useAuth from '@/app/hooks/useAuth';
-import Button from '../button/button';
+} from "@tabler/icons-react";
+import SignOutButton from "@/app/components/forms/authForms/signoutButton";
+import AdminMobileNav from "./adminMobileNav";
+import useAuth from "@/app/hooks/useAuth";
+import Button from "../button/button";
 
 export default function AdminSidebar() {
   const { loggedIn } = useAuth();

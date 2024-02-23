@@ -14,7 +14,7 @@ export default function Container({
 }: ContainerProps) {
   return (
     <div
-      className={`w-full min-h-[calc(100vh-80px)] flex justify-center py-16 lg:py-20 ${bgColor}`}
+      className={`w-full min-h-[calc(100vh-80px)] flex justify-center py-8 ${bgColor}`}
     >
       <div
         className={`px-5 w-full ${

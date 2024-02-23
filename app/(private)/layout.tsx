@@ -14,11 +14,11 @@ export default async function PrivateLayout({ children }: PrivateLayoutProps) {
   const session = await auth();
   if (!session?.user) return redirect("/auth/login");
   return (
-    <>
+    <div className="w-full pt-10 lg:pt-16">
       <Navbar cartItemsCount={0} />
       {!session?.user.verified && <EmailVerificationAlert />}
       {children}
       <Footer />
-    </>
+    </div>
   );
 }

@@ -3,7 +3,7 @@ import { ProfileInfoProps } from "@/app/lib/types";
 import React, { useEffect, useRef, useState } from "react";
 import { profileDropdown } from "./dropdownItemLists";
 import Link from "next/link";
-import SignOutButton from "../../forms/signoutButton";
+import SignOutButton from "../../forms/authForms/signoutButton";
 import { IconLogout2 } from "@tabler/icons-react";
 
 export default function ProfileInfo({

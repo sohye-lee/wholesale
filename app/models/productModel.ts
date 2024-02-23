@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Model, Schema, model, models } from "mongoose";
 import { ProductDocument } from "@lib/types";
 
 const productSchema = new Schema<ProductDocument>({
@@ -31,6 +31,9 @@ const productSchema = new Schema<ProductDocument>({
     required: true,
     default: 0,
   },
+  // productImages: {
+  //   type: [String]
+  // },
   category: {
     type: Schema.Types.ObjectId,
     ref: "Category",
@@ -40,3 +43,7 @@ const productSchema = new Schema<ProductDocument>({
     ref: "Collection",
   },
 });
+
+const ProductModel = models.Product || model("Product", productSchema);
+
+export default ProductModel as Model<ProductDocument>;

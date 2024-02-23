@@ -93,6 +93,7 @@ export interface ProductDocument extends Document {
     type: Schema.Types.ObjectId;
     ref: "Collection";
   };
+  productImages?: string[];
 }
 
 export interface Product {
@@ -108,6 +109,23 @@ export interface Product {
   quantity: number;
   category?: string;
   collection?: string;
+  productImages?: string[];
+}
+
+export interface ProductImageDocument extends Document {
+  id: string;
+  url?: string;
+  product: {
+    type: Schema.Types.ObjectId;
+    ref: "Product";
+  };
+}
+
+export interface ProductImage {
+  _id: string;
+  id: string;
+  url?: string;
+  product: string;
 }
 
 export interface Category {

@@ -1,13 +1,13 @@
-'use client';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import Input from './input';
-import Button from '../UI/button/button';
-import Link from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
-import { toast } from 'react-toastify';
-import { useRouter, redirect } from 'next/navigation';
-import useRequest from '@/app/hooks/useRequest';
+"use client";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Input from "../input";
+import Button from "../../UI/button/button";
+import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import { useRouter, redirect } from "next/navigation";
+import useRequest from "@/app/hooks/useRequest";
 
 interface ForgotPasswordForm {
   email: string;
@@ -20,10 +20,10 @@ export default function ForgotPasswordForm() {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<ForgotPasswordForm>({ mode: 'onBlur' });
+  } = useForm<ForgotPasswordForm>({ mode: "onBlur" });
   const [sendLink, { data, error, loading }] = useRequest(
-    '/api/users/forgot-password',
-    'POST'
+    "/api/users/forgot-password",
+    "POST"
   );
 
   const onValid = async (validForm: ForgotPasswordForm) => {
@@ -31,7 +31,7 @@ export default function ForgotPasswordForm() {
   };
 
   useEffect(() => {
-    session?.data?.user && redirect('/');
+    session?.data?.user && redirect("/");
   }, [session?.data?.user]);
   return (
     <form
@@ -45,8 +45,8 @@ export default function ForgotPasswordForm() {
       <Input
         placeholder="email"
         name="email"
-        register={register('email', {
-          required: 'You must write your email address.',
+        register={register("email", {
+          required: "You must write your email address.",
         })}
         type="email"
         required={true}

@@ -1,17 +1,18 @@
 "use client";
-import Button from "@/app/components/UI/button/button";
-import Container from "@/app/components/UI/container/container";
-import Input from "@/app/components/forms/input";
-import CateogryItem from "@/app/components/items/cateogryItem";
-import useRequest from "@/app/hooks/useRequest";
-import { Category } from "@/app/lib/types";
+import Button from "@components/UI/button/button";
+import Container from "@components/UI/container/container";
+import Input from "@components/forms/input";
+import CateogryItem from "@components/items/cateogryItem";
+import useRequest from "@hooks/useRequest";
+import swrFetcher from "@lib/swrFetcher";
+import { Category } from "@lib/types";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useSWR from "swr";
 
-const swrfetcher = (url: string) => fetch(url).then((res) => res.json());
+// const swrfetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface CategoryCreateForm {
   name: string;
@@ -38,7 +39,7 @@ export default function CategoryCreatePage() {
 
   const { data: categoriesData, error: categoriesError } = useSWR(
     "/api/categories",
-    swrfetcher
+    swrFetcher
   );
 
   const [categories, setCategories] = useState<Category[]>(

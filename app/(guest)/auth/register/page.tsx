@@ -1,6 +1,6 @@
-import Container from '@/app/components/UI/container/container';
-import SignUpForm from '@/app/components/forms/signupForm';
-import React from 'react';
+import Container from "@/app/components/UI/container/container";
+import SignUpForm from "@/app/components/forms/authForms/signupForm";
+import React from "react";
 
 export default function SignUpPage() {
   return (
