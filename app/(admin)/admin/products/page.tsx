@@ -9,11 +9,11 @@ const products: Product[] = [
     thumbnail: '',
     description: 'Magnetic bracelet',
     price: {
-      mrp: 129,
-      salePrice: 99,
-      saleOff: 30,
+      base: 129,
+      discounted: 99,
+      sale: 30,
     },
-    category: 'bracelet',
+    categoryId: '123',
     quantity: 100,
   },
   {
@@ -22,11 +22,11 @@ const products: Product[] = [
     thumbnail: '',
     description: 'Magnetic bracelet',
     price: {
-      mrp: 129,
-      salePrice: 99,
-      saleOff: 30,
+      base: 129,
+      discounted: 99,
+      sale: 30,
     },
-    category: 'bracelet',
+    categoryId: '123',
     quantity: 100,
   },
   {
@@ -35,11 +35,11 @@ const products: Product[] = [
     thumbnail: '',
     description: 'Magnetic bracelet',
     price: {
-      mrp: 129,
-      salePrice: 99,
-      saleOff: 30,
+      base: 129,
+      discounted: 99,
+      sale: 30,
     },
-    category: 'bracelet',
+    categoryId: '123',
     quantity: 100,
   },
 ];

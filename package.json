@@ -14,6 +14,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/nodemailer": "^6.4.14",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.0.1",
     "ldd": "^1.0.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.3",

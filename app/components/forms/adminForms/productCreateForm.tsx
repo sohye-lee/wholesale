@@ -1,52 +1,43 @@
-"use client";
-import useRequest from "@/app/hooks/useRequest";
-import { Category, Collection, Product } from "@/app/lib/types";
+'use client';
+import useRequest from '@/app/hooks/useRequest';
+import {
+  Category,
+  Collection,
+  NewProductData,
+  Product,
+  ProductForm,
+} from '@/app/lib/types';
 import React, {
   ChangeEventHandler,
   FormEvent,
   useEffect,
   useState,
   useTransition,
-} from "react";
-import Input from "../input";
-import { useForm } from "react-hook-form";
-import Message from "../message";
-import useSWR from "swr";
-import swrFetcher from "@/app/lib/swrFetcher";
-import { IconPlus, IconTrash } from "@tabler/icons-react";
-import Button from "../../UI/button/button";
-import ImageSelector from "./imageSelector";
-
-export interface ProductForm {
-  _id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  productImages?: string[];
-  bulletPoints: string[];
-  mrp: number;
-  salePrice: number;
-  quantity: number;
-  category: string;
-  collection: string;
-}
+} from 'react';
+import Input from '../input';
+import { useForm } from 'react-hook-form';
+import Message from '../message';
+import useSWR from 'swr';
+import swrFetcher from '@/app/lib/swrFetcher';
+import { IconPlus, IconTrash } from '@tabler/icons-react';
+import Button from '../../UI/button/button';
+import ImageSelector from './imageSelector';
 
 interface Props {
   initialValue?: ProductForm;
-  onSubmit(values: any): void;
+  onSubmit(values: NewProductData): void;
 }
 
 const defaultValue = {
-  _id: "",
-  title: "",
-  description: "",
-  thumbnail: "",
-  bulletPoints: [""],
-  mrp: 0,
-  salePrice: 0,
+  title: '',
+  description: '',
+  thumbnail: '',
+  bulletpoints: [''],
+  base: 0,
+  discounted: 0,
   quantity: 0,
-  category: "",
-  collection: "",
+  categoryId: '',
+  collectionId: '',
 };
 
 export default function ProductCreateForm(props: Props) {
@@ -58,76 +49,44 @@ export default function ProductCreateForm(props: Props) {
   const [productInfo, setProductInfo] = useState({ ...defaultValue });
   const [thumbnailSource, setThumbnailSource] = useState<string[]>();
   const [productImagesSource, setProductImagesSource] = useState<string[]>();
+  const [categoryId, setCategoryId] = useState<string>();
+  const [collectionId, setCollectionId] = useState<string>();
   const [categories, setCategories] = useState<Category[]>();
   const [collections, setCollections] = useState<Collection[]>();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ProductForm>();
+  } = useForm<NewProductData>();
   const [createProduct, { data, error, loading }] = useRequest(
-    "/api/products",
-    "POST"
+    '/api/products',
+    'POST'
   );
   useState();
   const { data: categoriesData, error: categoriesError } = useSWR(
-    "/api/categories",
+    '/api/categories',
     swrFetcher
   );
   const { data: collectionsData, error: collectionsError } = useSWR(
-    "/api/collections",
+    '/api/collections',
     swrFetcher
   );
 
-  const onValid = (validForm: Product) => {};
-  // return (
-  //   <form
-  //     onSubmit={handleSubmit(onValid)}
-  //     className="w-full border flex flex-col items-center border-stone-300 p-8 gap-3 bg-white"
-  //   >
-  //     {data?.ok ? (
-  //       <Message mode="success" message={data?.message} />
-  //     ) : (
-  //       <Message mode="error" message={data?.message} />
-  //     )}
-
-  //     <h1 className="text-xl font-medium uppercase text-center mb-3">
-  //       Upload a New Product
-  //     </h1>
-  //     <Input
-  //       placeholder="name"
-  //       name="name"
-  //       register={register("title", { required: "This field is required." })}
-  //       type="text"
-  //       required={true}
-  //       errorMessage={errors?.title?.message}
-  //     />
-  //     <Input
-  //       placeholder="description"
-  //       name="description"
-  //       register={register("description")}
-  //       type="text"
-  //       required={true}
-  //       errorMessage={errors?.description?.message}
-  //     />
-  //   </form>
-  // );
-
-  const fields = productInfo.bulletPoints;
+  const fields = productInfo.bulletpoints;
 
   const addMoreBulletPoints = () => {
     setProductInfo({
       ...productInfo,
-      bulletPoints: [...productInfo.bulletPoints, ""],
+      bulletpoints: [...productInfo.bulletpoints, ''],
     });
   };
 
   const removeBulletPoint = (indexToRemove: number) => {
-    const points = [...productInfo.bulletPoints];
+    const points = [...productInfo.bulletpoints];
     const filteredPoints = points.filter((_, index) => index !== indexToRemove);
     setProductInfo({
       ...productInfo,
-      bulletPoints: [...filteredPoints],
+      bulletpoints: [...filteredPoints],
     });
   };
 
@@ -135,7 +94,7 @@ export default function ProductCreateForm(props: Props) {
     const oldValues = [...fields];
     oldValues[index] = value;
 
-    setProductInfo({ ...productInfo, bulletPoints: [...oldValues] });
+    setProductInfo({ ...productInfo, bulletpoints: [...oldValues] });
   };
 
   const removeImage = async (index: number) => {
@@ -144,27 +103,22 @@ export default function ProductCreateForm(props: Props) {
   };
 
   const getBtnTitle = () => {
-    if (isForUpdate) return isPending ? "Updating" : "Update";
-    return isPending ? "Creating" : "Create";
+    if (isForUpdate) return isPending ? 'Updating' : 'Update';
+    return isPending ? 'Creating' : 'Create';
   };
 
   useEffect(() => {
     if (initialValue) {
       setProductInfo({ ...initialValue });
       setThumbnailSource([initialValue?.thumbnail]);
-      setProductImagesSource(initialValue?.productImages);
+      setProductImagesSource(initialValue?.images);
       setIsForUpdate(true);
+      setCategoryId(initialValue?.categoryId);
+      setCollectionId(initialValue?.collectionId);
     }
     categoriesData?.ok && setCategories(categoriesData?.categories);
     collectionsData?.ok && setCollections(collectionsData?.collections);
-  }, [
-    initialValue,
-    categoriesData?.categories,
-    collectionsData?.collections,
-    categoriesData?.ok,
-    collectionsData?.ok,
-    collectionsData?.categories,
-  ]);
+  }, [initialValue, categoriesData?.ok, collectionsData?.ok]);
 
   const onImagesChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const files = target.files;
@@ -190,6 +144,15 @@ export default function ProductCreateForm(props: Props) {
     }
   };
 
+  const onValid = (validForm: Product) => {
+    createProduct({
+      ...validForm,
+      bulletpoints: productInfo.bulletpoints,
+      thumbnail,
+      images,
+    });
+  };
+
   return (
     <div className="max-w-3xl mx-auto">
       <h1 className="mb-5 text-2xl font-medium">Add new product</h1>
@@ -200,12 +163,14 @@ export default function ProductCreateForm(props: Props) {
             await onSubmit({ ...productInfo, images, thumbnail });
           })
         }
+        // onSubmit={onSubmit}
         className="space-y-6"
       >
         <div className="space-y-3">
           <div>
             <h3 className="mb-0 p">Main Image</h3>
             <ImageSelector
+              {...register('thumbnail')}
               id="thumb"
               images={thumbnailSource}
               onChange={onThumbnailChange}
@@ -216,6 +181,7 @@ export default function ProductCreateForm(props: Props) {
             <ImageSelector
               multiple
               id="images"
+              {...register('images')}
               images={productImagesSource}
               onRemove={removeImage}
               onChange={onImagesChange}
@@ -226,6 +192,7 @@ export default function ProductCreateForm(props: Props) {
         <div>
           <h3>Title</h3>
           <Input
+            {...register('title')}
             label="Title"
             type="text"
             placeholder="Title"
@@ -240,6 +207,7 @@ export default function ProductCreateForm(props: Props) {
         <div>
           <h3>Description</h3>
           <Input
+            {...register('description')}
             type="textarea"
             placeholder="Description"
             required={false}
@@ -259,16 +227,17 @@ export default function ProductCreateForm(props: Props) {
           <div>
             <h3>Category</h3>
             <select
+              {...register('categoryId')}
               className="peer w-full border border-stone-400 px-3 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800"
               onChange={(e: FormEvent<HTMLSelectElement>) => {
                 setProductInfo({
                   ...productInfo,
-                  category: e.currentTarget.value,
+                  categoryId: e.currentTarget.value,
                 });
               }}
-              defaultValue=""
+              // defaultValue=""
               name="category"
-              value={productInfo.category}
+              value={productInfo.categoryId || ''}
               // label="Select Category"
             >
               <option disabled value="">
@@ -286,16 +255,17 @@ export default function ProductCreateForm(props: Props) {
         <div className="w-full flex flex-col group relative">
           <h3>Collection</h3>
           <select
+            {...register('collectionId')}
             name="collection"
             className="peer w-full border border-stone-400 px-3 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800"
             onChange={(e: FormEvent<HTMLSelectElement>) => {
               setProductInfo({
                 ...productInfo,
-                collection: e.currentTarget.value,
+                collectionId: e.currentTarget.value,
               });
             }}
-            defaultValue=""
-            value={productInfo.collection}
+            // defaultValue=""
+            value={productInfo.collectionId || ''}
             // label="Select Category"
           >
             <option disabled value="">
@@ -316,13 +286,14 @@ export default function ProductCreateForm(props: Props) {
           <div className="flex items-stretch space-x-3">
             <div className="w-full">
               <Input
+                {...register('base')}
                 type="number"
                 required={true}
-                value={productInfo.mrp}
+                value={productInfo.base}
                 label="MRP"
                 onChange={({ currentTarget }: FormEvent<HTMLInputElement>) => {
-                  const mrp = +currentTarget.value;
-                  setProductInfo({ ...productInfo, mrp });
+                  const base = +currentTarget.value;
+                  setProductInfo({ ...productInfo, base });
                 }}
                 className="mb-4"
               />
@@ -331,13 +302,14 @@ export default function ProductCreateForm(props: Props) {
 
             <div className="w-full">
               <Input
+                {...register('discounted')}
                 type="number"
-                value={productInfo.salePrice}
+                value={productInfo.discounted}
                 required={true}
                 label="Sale Price"
                 onChange={({ currentTarget }: FormEvent<HTMLInputElement>) => {
-                  const salePrice = +currentTarget.value;
-                  setProductInfo({ ...productInfo, salePrice });
+                  const discounted = +currentTarget.value;
+                  setProductInfo({ ...productInfo, discounted });
                 }}
                 className="mb-4"
               />
@@ -350,6 +322,7 @@ export default function ProductCreateForm(props: Props) {
           <h3>Stock</h3>
 
           <Input
+            {...register('quantity')}
             value={productInfo.quantity}
             label="Qty"
             type="number"
