@@ -1,15 +1,15 @@
 // import { Icon, IconNode } from '@tabler/icons-react';
 
-import { IconProps } from '@tabler/icons-react';
-import { Schema, Document } from 'mongoose';
-import { ForwardRefExoticComponent, RefAttributes } from 'react';
+import { IconProps } from "@tabler/icons-react";
+import { Schema, Document } from "mongoose";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 // UI Component props
 export interface DropdownItemProps {
   link: string;
   text: string;
   dropdownIcon?: ForwardRefExoticComponent<
-    Omit<IconProps, 'ref'> & RefAttributes<SVGSVGElement>
+    Omit<IconProps, "ref"> & RefAttributes<SVGSVGElement>
   > | null;
   isAdmin?: boolean;
 }
@@ -26,8 +26,8 @@ export interface ProfileInfoProps {
 
 export interface ButtonType {
   children: React.ReactNode;
-  mode: 'CTA' | 'save' | 'success' | 'danger' | 'neutral';
-  size: 'xsmall' | 'small' | 'medium' | 'large';
+  mode: "CTA" | "save" | "success" | "danger" | "neutral";
+  size: "xsmall" | "small" | "medium" | "large";
   link?: string;
   addClass?: string;
   loading?: boolean;
@@ -61,7 +61,7 @@ export interface UserDocument extends Document {
   email: string;
   name: string;
   password: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   avatar?: { url: string; id: string };
   verified: boolean;
 }
@@ -70,7 +70,7 @@ export interface SessionUserProfile {
   _id: string;
   email: string;
   name: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   avatar?: { url: string; id: string };
   verified: boolean;
 }
@@ -85,34 +85,34 @@ export interface ProductDocument extends Document {
     base: number;
     discounted: number;
   };
-  sale: number;
+  sale?: number;
   quantity: number;
   // rating?: number;
   categoryId: {
     type: Schema.Types.ObjectId;
-    ref: 'Category';
+    ref: "Category";
   };
   collectionId: {
     type: Schema.Types.ObjectId;
-    ref: 'Collection';
+    ref: "Collection";
   };
 }
 
 export interface Product {
   _id: string;
   title: string;
-  thumbnail?: string;
+  thumbnail?: { id: string; url: string };
   description?: string;
   bulletpoints?: string;
   price: {
     base?: number;
     discounted: number;
-    sale?: number;
   };
+  sale?: number;
   quantity: number;
   categoryId?: string;
   collectionId?: string;
-  images?: string[];
+  images?: { id: string; url: string }[];
 }
 
 export interface ProductForm {
@@ -139,6 +139,22 @@ export interface NewProductData {
   quantity: number;
   categoryId: string;
   collectionId: string;
+}
+
+export interface CreateProductData {
+  title: string;
+  thumbnail?: { id: string; url: string };
+  description?: string;
+  bulletpoints?: string[];
+  price: {
+    base?: number;
+    discounted: number;
+  };
+  sale?: number;
+  quantity: number;
+  categoryId?: string;
+  collectionId?: string;
+  images?: { id: string; url: string }[];
 }
 
 // export interface ProductImageDocument extends Document {
@@ -177,7 +193,7 @@ export interface CollectionDocument extends Document {
 }
 
 // other
-export type NotificationMode = 'info' | 'success' | 'error' | 'warning';
+export type NotificationMode = "info" | "success" | "error" | "warning";
 export interface NotificationProps {
   mode: NotificationMode;
   message: string;
@@ -192,6 +208,6 @@ export type Profile = {
 
 export interface EmailOptions {
   profile: Profile;
-  subject: 'verification' | 'forgot-password' | 'password-changed';
+  subject: "verification" | "forgot-password" | "password-changed";
   linkUrl?: string;
 }

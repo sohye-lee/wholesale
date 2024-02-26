@@ -74,6 +74,7 @@ export default function CategoryCreatePage() {
     router,
     reset,
   ]);
+
   return (
     <Container width="small">
       <h1 className="text-2xl font-medium mb-3">Create A Category</h1>

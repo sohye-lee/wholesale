@@ -1,6 +1,10 @@
-'use server';
+"use server";
 
-import { v2 as cloudinary } from 'cloudinary';
+import startDb from "@/app/lib/db";
+import { CreateProductData } from "@/app/lib/types";
+import ProductModel from "@/app/models/productModel";
+import { v2 as cloudinary } from "cloudinary";
+import { NextResponse } from "next/server";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -9,6 +13,7 @@ cloudinary.config({
   secure: true,
 });
 
+// Cloudinary Credentials
 export const getCloudConfig = () => {
   return {
     name: process.env.CLOUD_NAME!,
@@ -26,6 +31,21 @@ export const getCloudSignature = async () => {
     },
     secret
   );
-
   return { timestamp, signature };
 };
+
+// export const createProduct = async (info: CreateProductData) => {
+//   try {
+//     await startDb();
+//     const product = await ProductModel.create({
+//       ...info,
+//     });
+//     return NextResponse.json({
+//       ok: true,
+//       message: "The product has been successfully created!",
+//       product,
+//     });
+//   } catch (error) {
+//     console.log((error as any).message);
+//   }
+// };

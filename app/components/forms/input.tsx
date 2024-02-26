@@ -6,7 +6,7 @@ interface InputProps {
   required: boolean;
   type: "text" | "email" | "password" | "phone" | "number" | "textarea";
   placeholder?: string;
-  errorMessage?: string;
+  errorMessage?: string | null;
   addClass?: string;
 }
 

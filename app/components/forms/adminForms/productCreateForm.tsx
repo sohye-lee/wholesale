@@ -1,27 +1,27 @@
-'use client';
-import useRequest from '@/app/hooks/useRequest';
+"use client";
+import useRequest from "@/app/hooks/useRequest";
 import {
   Category,
   Collection,
   NewProductData,
   Product,
   ProductForm,
-} from '@/app/lib/types';
+} from "@/app/lib/types";
 import React, {
   ChangeEventHandler,
   FormEvent,
   useEffect,
   useState,
   useTransition,
-} from 'react';
-import Input from '../input';
-import { useForm } from 'react-hook-form';
-import Message from '../message';
-import useSWR from 'swr';
-import swrFetcher from '@/app/lib/swrFetcher';
-import { IconPlus, IconTrash } from '@tabler/icons-react';
-import Button from '../../UI/button/button';
-import ImageSelector from './imageSelector';
+} from "react";
+import Input from "../input";
+import { useForm } from "react-hook-form";
+import Message from "../message";
+import useSWR from "swr";
+import swrFetcher from "@/app/lib/swrFetcher";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
+import Button from "../../UI/button/button";
+import ImageSelector from "./imageSelector";
 
 interface Props {
   initialValue?: ProductForm;
@@ -29,15 +29,15 @@ interface Props {
 }
 
 const defaultValue = {
-  title: '',
-  description: '',
-  thumbnail: '',
-  bulletpoints: [''],
+  title: "",
+  description: "",
+  thumbnail: "",
+  bulletpoints: [""],
   base: 0,
   discounted: 0,
   quantity: 0,
-  categoryId: '',
-  collectionId: '',
+  categoryId: "",
+  collectionId: "",
 };
 
 export default function ProductCreateForm(props: Props) {
@@ -56,19 +56,24 @@ export default function ProductCreateForm(props: Props) {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<NewProductData>();
+  } = useForm<NewProductData>({
+    reValidateMode: "onChange",
+  });
+
   const [createProduct, { data, error, loading }] = useRequest(
-    '/api/products',
-    'POST'
+    "/api/products",
+    "POST"
   );
+
   useState();
   const { data: categoriesData, error: categoriesError } = useSWR(
-    '/api/categories',
+    "/api/categories",
     swrFetcher
   );
   const { data: collectionsData, error: collectionsError } = useSWR(
-    '/api/collections',
+    "/api/collections",
     swrFetcher
   );
 
@@ -77,7 +82,7 @@ export default function ProductCreateForm(props: Props) {
   const addMoreBulletPoints = () => {
     setProductInfo({
       ...productInfo,
-      bulletpoints: [...productInfo.bulletpoints, ''],
+      bulletpoints: [...productInfo.bulletpoints, ""],
     });
   };
 
@@ -103,8 +108,8 @@ export default function ProductCreateForm(props: Props) {
   };
 
   const getBtnTitle = () => {
-    if (isForUpdate) return isPending ? 'Updating' : 'Update';
-    return isPending ? 'Creating' : 'Create';
+    if (isForUpdate) return isPending ? "Updating" : "Update";
+    return isPending ? "Creating" : "Create";
   };
 
   useEffect(() => {
@@ -144,14 +149,16 @@ export default function ProductCreateForm(props: Props) {
     }
   };
 
-  const onValid = (validForm: Product) => {
-    createProduct({
-      ...validForm,
-      bulletpoints: productInfo.bulletpoints,
-      thumbnail,
-      images,
+  const onValid = () => {
+    startTransition(async () => {
+      await onSubmit({ ...productInfo, images, thumbnail });
     });
   };
+
+  useEffect(() => {
+    // console.log("watch", watch());
+    // console.log("errors", errors);
+  }, []);
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -163,14 +170,14 @@ export default function ProductCreateForm(props: Props) {
             await onSubmit({ ...productInfo, images, thumbnail });
           })
         }
-        // onSubmit={onSubmit}
+        // onSubmit={handleSubmit(onValid)}
         className="space-y-6"
       >
         <div className="space-y-3">
           <div>
             <h3 className="mb-0 p">Main Image</h3>
             <ImageSelector
-              {...register('thumbnail')}
+              {...register("thumbnail")}
               id="thumb"
               images={thumbnailSource}
               onChange={onThumbnailChange}
@@ -181,7 +188,7 @@ export default function ProductCreateForm(props: Props) {
             <ImageSelector
               multiple
               id="images"
-              {...register('images')}
+              {...register("images")}
               images={productImagesSource}
               onRemove={removeImage}
               onChange={onImagesChange}
@@ -192,7 +199,7 @@ export default function ProductCreateForm(props: Props) {
         <div>
           <h3>Title</h3>
           <Input
-            {...register('title')}
+            {...register("title")}
             label="Title"
             type="text"
             placeholder="Title"
@@ -201,13 +208,14 @@ export default function ProductCreateForm(props: Props) {
             onChange={({ currentTarget }: FormEvent<HTMLInputElement>) =>
               setProductInfo({ ...productInfo, title: currentTarget.value })
             }
+            errorMessage={errors?.title?.message}
           />
         </div>
 
         <div>
           <h3>Description</h3>
           <Input
-            {...register('description')}
+            {...register("description")}
             type="textarea"
             placeholder="Description"
             required={false}
@@ -220,6 +228,7 @@ export default function ProductCreateForm(props: Props) {
                 description: currentTarget.value,
               })
             }
+            errorMessage={errors?.description?.message}
           />
         </div>
 
@@ -227,7 +236,10 @@ export default function ProductCreateForm(props: Props) {
           <div>
             <h3>Category</h3>
             <select
-              {...register('categoryId')}
+              // {...register("categoryId", {
+              //   required: "You must select a category.",
+              //   // validate: (string: string) => string != "",
+              // })}
               className="peer w-full border border-stone-400 px-3 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800"
               onChange={(e: FormEvent<HTMLSelectElement>) => {
                 setProductInfo({
@@ -235,10 +247,8 @@ export default function ProductCreateForm(props: Props) {
                   categoryId: e.currentTarget.value,
                 });
               }}
-              // defaultValue=""
-              name="category"
-              value={productInfo.categoryId || ''}
-              // label="Select Category"
+              name="categoryId"
+              value={productInfo.categoryId || ""}
             >
               <option disabled value="">
                 Select
@@ -250,13 +260,19 @@ export default function ProductCreateForm(props: Props) {
                   </option>
                 ))}
             </select>
+            {errors?.categoryId?.message && (
+              <Message message={errors?.categoryId?.message} mode="error" />
+            )}
           </div>
         </div>
         <div className="w-full flex flex-col group relative">
           <h3>Collection</h3>
           <select
-            {...register('collectionId')}
-            name="collection"
+            // {...register("collectionId", {
+            //   required: "You must select a collection.",
+            //   // validate: (string: string) => string != "",
+            // })}
+            name="collectionId"
             className="peer w-full border border-stone-400 px-3 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800"
             onChange={(e: FormEvent<HTMLSelectElement>) => {
               setProductInfo({
@@ -264,9 +280,7 @@ export default function ProductCreateForm(props: Props) {
                 collectionId: e.currentTarget.value,
               });
             }}
-            // defaultValue=""
-            value={productInfo.collectionId || ''}
-            // label="Select Category"
+            value={productInfo.collectionId || ""}
           >
             <option disabled value="">
               Select
@@ -278,6 +292,9 @@ export default function ProductCreateForm(props: Props) {
                 </option>
               ))}
           </select>
+          {errors?.collectionId?.message && (
+            <Message message={errors?.collectionId?.message} mode="error" />
+          )}
         </div>
 
         <div className=" ">
@@ -286,7 +303,7 @@ export default function ProductCreateForm(props: Props) {
           <div className="flex items-stretch space-x-3">
             <div className="w-full">
               <Input
-                {...register('base')}
+                {...register("base")}
                 type="number"
                 required={true}
                 value={productInfo.base}
@@ -295,6 +312,7 @@ export default function ProductCreateForm(props: Props) {
                   const base = +currentTarget.value;
                   setProductInfo({ ...productInfo, base });
                 }}
+                errorMessage={errors?.base?.message}
                 className="mb-4"
               />
               <span className="text-stone-700 text-xs">MRP</span>
@@ -302,7 +320,7 @@ export default function ProductCreateForm(props: Props) {
 
             <div className="w-full">
               <Input
-                {...register('discounted')}
+                {...register("discounted")}
                 type="number"
                 value={productInfo.discounted}
                 required={true}
@@ -312,6 +330,7 @@ export default function ProductCreateForm(props: Props) {
                   setProductInfo({ ...productInfo, discounted });
                 }}
                 className="mb-4"
+                errorMessage={errors?.discounted?.message}
               />
               <span className="text-stone-700 text-xs">Sale Price</span>
             </div>
@@ -322,7 +341,13 @@ export default function ProductCreateForm(props: Props) {
           <h3>Stock</h3>
 
           <Input
-            {...register('quantity')}
+            {...register("quantity", {
+              // required: "This field is required.",
+              min: {
+                value: 0,
+                message: "Should be bigger than 0.",
+              },
+            })}
             value={productInfo.quantity}
             label="Qty"
             type="number"
@@ -332,6 +357,7 @@ export default function ProductCreateForm(props: Props) {
               if (!isNaN(quantity))
                 setProductInfo({ ...productInfo, quantity });
             }}
+            errorMessage={errors?.quantity?.message}
             className="mb-4"
           />
         </div>
@@ -375,8 +401,14 @@ export default function ProductCreateForm(props: Props) {
           </button>
         </div>
 
-        <Button size="medium" mode="save" disabled={isPending} type="submit">
-          {getBtnTitle()}
+        <Button
+          size="medium"
+          mode="save"
+          // disabled={errors }
+          loading={loading}
+          type="submit"
+        >
+          Create
         </Button>
       </form>
     </div>
