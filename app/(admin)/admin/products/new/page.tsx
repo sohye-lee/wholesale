@@ -2,18 +2,18 @@
 import { uploadImage } from "@/app/lib/uploadImage";
 import Container from "@components/UI/container/container";
 import ProductCreateForm from "@components/forms/adminForms/productCreateForm";
-import { NewProductData, ProductForm } from "@lib/types";
-import React from "react";
-// import { createProduct } from "../actions";
+import { NewProductData } from "@lib/types";
+import React, { useEffect } from "react";
 import useRequest from "@/app/hooks/useRequest";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface Image {
   id: string;
   url: string;
 }
-type FileImages = Image[];
-
 export default function ProductCreatePage() {
+  const router = useRouter();
   const [createProduct, { data, error, loading }] = useRequest(
     `/api/products`,
     "POST"
@@ -37,14 +37,17 @@ export default function ProductCreatePage() {
         ...validForm,
         price: { base: validForm.base, discounted: validForm.discounted },
         thumbnail: thumbnailRes,
-        images: images,
+        images,
       });
     } catch (error) {
       console.log(error);
-
-      // toast.error(error.message)
+      toast.error((error as any).message);
     }
   };
+
+  useEffect(() => {
+    data?.ok && data?.product && router.push(`/products/${data?.product?._id}`);
+  }, [data?.ok]);
   return (
     <Container width="small" addClass="pt-0">
       <ProductCreateForm onSubmit={onSubmit} />

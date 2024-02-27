@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import SearchForm from "@components/forms/searchForm";
-import { Product } from "@/app/lib/types";
+import { Product, ProductExtended } from "@/app/lib/types";
 import Button from "@components/UI/button/button";
 import {
   IconEdit,
@@ -12,7 +12,7 @@ import {
 import Link from "next/link";
 
 interface ProductTableProps {
-  products: Product[];
+  products: ProductExtended[];
   currentPageNo: number;
   hasMore?: boolean;
   showPageNavigator?: boolean;
@@ -25,15 +25,16 @@ export default function ProductTable({
 }: ProductTableProps) {
   const [pageNo, setPageNo] = useState(currentPageNo);
   const renderProducts =
-    products.length > 0 ? (
+    products && products.length > 0 ? (
       products.map((product) => {
         return (
           <tr key={product._id}>
             <td>{product.title}</td>
-            <td>{product.price.mrp}</td>
-            <td>{product.price.salePrice}</td>
+            <td>{product.price.base}</td>
+            <td>{product.price.discounted}</td>
             <td>{product.quantity}</td>
-            <td>{product.category}</td>
+            <td>{product.categoryId?.name}</td>
+            <td>{product.collectionId?.name}</td>
             <td>
               <Link href={`/products/${product._id}/update`}>
                 <IconEdit width={16} />
@@ -50,7 +51,7 @@ export default function ProductTable({
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-semibold">Products</h1>
+        <h1 className="text-3xl font-medium">Products</h1>
         <div className="flex items-stretch gap-3">
           <SearchForm />
           <Button size="small" mode="success" link="/admin/products/new">
@@ -68,6 +69,7 @@ export default function ProductTable({
             <th>Sale Price</th>
             <th>Quantity</th>
             <th>Category</th>
+            <th>Colleciton</th>
             <th>Edit</th>
           </tr>
         </thead>

@@ -12,7 +12,7 @@ interface GuestLayoutProps {
 
 export default async function GuestLayout({ children }: GuestLayoutProps) {
   const session = await auth();
-  if (session?.user) return redirect("/");
+  // if (session?.user) return redirect("/");
   return (
     <div className="w-full pt-10 lg:pt-16">
       <Navbar cartItemsCount={0} />

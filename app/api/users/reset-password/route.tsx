@@ -1,5 +1,5 @@
 import startDb from "@/app/lib/db";
-import { sendEmail } from "@/app/lib/functions";
+import { sendEmail } from "@/app/lib/sendEmail";
 import { EmailOptions } from "@/app/lib/types";
 import EmailVerificationToken from "@/app/models/emailVerificationToken";
 import UserModel from "@/app/models/userModel";

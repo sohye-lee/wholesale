@@ -4,7 +4,7 @@ import UserModel from "@/app/models/userModel";
 import startDb from "@lib/db";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { sendEmail } from "@/app/lib/functions";
+import { sendEmail } from "@/app/lib/sendEmail";
 
 export const GET = async (req: Request) => {
   await startDb();

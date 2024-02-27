@@ -1,28 +1,29 @@
-import { Document, Model, Schema, model, models } from 'mongoose';
+import { Document, Model, Schema, model, models } from "mongoose";
+import { ProductDocument } from "../lib/types";
 // import { ProductDocument } from "@lib/types";
 
-export interface ProductDocument extends Document {
-  title: string;
-  description?: string;
-  bulletpoints?: string[];
-  thumbnail?: { url: string; id: string };
-  images?: { url: string; id: string }[];
-  price: {
-    base: number;
-    discounted: number;
-  };
-  sale: number;
-  quantity: number;
-  // rating?: number;
-  categoryId: {
-    type: Schema.Types.ObjectId;
-    ref: 'Category';
-  };
-  collectionId: {
-    type: Schema.Types.ObjectId;
-    ref: 'Collection';
-  };
-}
+// export interface ProductDocument extends Document {
+//   title: string;
+//   description?: string;
+//   bulletpoints?: string[];
+//   thumbnail?: { url: string; id: string };
+//   images?: { url: string; id: string }[];
+//   price: {
+//     base: number;
+//     discounted: number;
+//   };
+//   sale: number;
+//   quantity: number;
+//   // rating?: number;
+//   categoryId: {
+//     type: Schema.Types.ObjectId;
+//     ref: 'Category';
+//   };
+//   collectionId: {
+//     type: Schema.Types.ObjectId;
+//     ref: 'Collection';
+//   };
+// }
 
 const productSchema = new Schema<ProductDocument>(
   {
@@ -67,11 +68,11 @@ const productSchema = new Schema<ProductDocument>(
     // },
     categoryId: {
       type: Schema.Types.ObjectId,
-      ref: 'Category',
+      ref: "Category",
     },
     collectionId: {
       type: Schema.Types.ObjectId,
-      ref: 'Collection',
+      ref: "Collection",
     },
   },
   {
@@ -79,11 +80,11 @@ const productSchema = new Schema<ProductDocument>(
   }
 );
 
-productSchema.virtual('sale').get(function (this: ProductDocument) {
+productSchema.virtual("sale").get(function (this: ProductDocument) {
   return (this.price.base - this.price.discounted) / this.price.base;
 });
 
 const ProductModel =
-  models.Product || model<ProductDocument>('Product', productSchema);
+  models.Product || model<ProductDocument>("Product", productSchema);
 
 export default ProductModel as Model<ProductDocument>;

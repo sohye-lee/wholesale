@@ -4,7 +4,6 @@ import {
   Category,
   Collection,
   NewProductData,
-  Product,
   ProductForm,
 } from "@/app/lib/types";
 import React, {
@@ -123,7 +122,13 @@ export default function ProductCreateForm(props: Props) {
     }
     categoriesData?.ok && setCategories(categoriesData?.categories);
     collectionsData?.ok && setCollections(collectionsData?.collections);
-  }, [initialValue, categoriesData?.ok, collectionsData?.ok]);
+  }, [
+    initialValue,
+    categoriesData?.ok,
+    collectionsData?.ok,
+    categoriesData?.categories,
+    collectionsData?.collectionIds,
+  ]);
 
   const onImagesChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const files = target.files;
@@ -236,8 +241,8 @@ export default function ProductCreateForm(props: Props) {
           <div>
             <h3>Category</h3>
             <select
-              // {...register("categoryId", {
-              //   required: "You must select a category.",
+              // {...register("categoryIdId", {
+              //   required: "You must select a categoryId.",
               //   // validate: (string: string) => string != "",
               // })}
               className="peer w-full border border-stone-400 px-3 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800"
@@ -268,10 +273,10 @@ export default function ProductCreateForm(props: Props) {
         <div className="w-full flex flex-col group relative">
           <h3>Collection</h3>
           <select
-            // {...register("collectionId", {
-            //   required: "You must select a collection.",
-            //   // validate: (string: string) => string != "",
-            // })}
+            {...register("collectionId", {
+              required: "You must select a collectionId.",
+              // validate: (string: string) => string != "",
+            })}
             name="collectionId"
             className="peer w-full border border-stone-400 px-3 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:bg-white focus:ring-2 focus:ring-amber-800"
             onChange={(e: FormEvent<HTMLSelectElement>) => {
@@ -404,7 +409,7 @@ export default function ProductCreateForm(props: Props) {
         <Button
           size="medium"
           mode="save"
-          // disabled={errors }
+          disabled={Object.keys(errors).length != 0}
           loading={loading}
           type="submit"
         >

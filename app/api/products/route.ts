@@ -5,8 +5,11 @@ import { NextResponse } from "next/server";
 export const GET = async (req: Request) => {
   try {
     await startDb();
-    const products = await ProductModel.find({});
+    const products = await ProductModel.find()
+      .populate("categoryId")
+      .populate("collectionId");
 
+    console.log(products);
     return NextResponse.json({
       ok: true,
       message: "Successfully loaded",
@@ -14,6 +17,10 @@ export const GET = async (req: Request) => {
     });
   } catch (error) {
     console.log(error);
+    return NextResponse.json({
+      ok: false,
+      message: "Something went wrong.",
+    });
   }
 };
 

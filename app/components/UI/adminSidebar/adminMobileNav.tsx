@@ -95,7 +95,7 @@ export default function AdminMobileNav() {
             <span>Dashboard</span>
           </NavItem>
           <NavItem
-            link="/admin/Products"
+            link="/admin/products"
             active={false}
             dropdown={false}
             setOpen={setOpen}

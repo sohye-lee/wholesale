@@ -1,7 +1,7 @@
 // import { Icon, IconNode } from '@tabler/icons-react';
 
 import { IconProps } from "@tabler/icons-react";
-import { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 // UI Component props
@@ -103,7 +103,7 @@ export interface Product {
   title: string;
   thumbnail?: { id: string; url: string };
   description?: string;
-  bulletpoints?: string;
+  bulletpoints?: string[];
   price: {
     base?: number;
     discounted: number;
@@ -112,6 +112,23 @@ export interface Product {
   quantity: number;
   categoryId?: string;
   collectionId?: string;
+  images?: { id: string; url: string }[];
+}
+
+export interface ProductExtended {
+  _id: string;
+  title: string;
+  thumbnail?: { id: string; url: string };
+  description?: string;
+  bulletpoints?: string[];
+  price: {
+    base?: number;
+    discounted: number;
+  };
+  sale?: number;
+  quantity: number;
+  categoryId?: Category;
+  collectionId?: Collection;
   images?: { id: string; url: string }[];
 }
 
@@ -150,28 +167,17 @@ export interface CreateProductData {
     base?: number;
     discounted: number;
   };
-  sale?: number;
+  // sale?: number;
   quantity: number;
   categoryId?: string;
   collectionId?: string;
   images?: { id: string; url: string }[];
 }
 
-// export interface ProductImageDocument extends Document {
-//   id: string;
-//   url?: string;
-//   product: {
-//     type: Schema.Types.ObjectId;
-//     ref: 'Product';
-//   };
-// }
-
-// export interface ProductImage {
-//   _id: string;
-//   id: string;
-//   url?: string;
-//   product: string;
-// }
+export interface ProductImage {
+  id: string;
+  url?: string;
+}
 
 export interface Category {
   _id: string;

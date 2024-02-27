@@ -5,7 +5,7 @@ import crypto from "crypto";
 import EmailVerificationToken from "@/app/models/emailVerificationToken";
 import nodemailer from "nodemailer";
 import { EmailOptions } from "@/app/lib/types";
-import { sendEmail } from "@/app/lib/functions";
+import { sendEmail } from "@/app/lib/sendEmail";
 
 interface ForgotPasswordRequest {
   email: string;
