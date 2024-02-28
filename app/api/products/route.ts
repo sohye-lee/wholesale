@@ -1,25 +1,25 @@
-import startDb from "@/app/lib/db";
-import ProductModel from "@/app/models/productModel";
-import { NextResponse } from "next/server";
+import startDb from '@/app/lib/db';
+import ProductModel from '@/app/models/productModel';
+import { NextResponse } from 'next/server';
 
 export const GET = async (req: Request) => {
   try {
     await startDb();
-    const products = await ProductModel.find()
-      .populate("categoryId")
-      .populate("collectionId");
+    const products = await ProductModel.find({})
+    .populate({ path: 'categoryId', model: 'Category' })
+    .populate({ path: 'collectionId', model: 'Collection' })
+    // .populate("collectionId");
 
-    console.log(products);
     return NextResponse.json({
       ok: true,
-      message: "Successfully loaded",
+      message: 'Successfully loaded',
       products,
     });
   } catch (error) {
     console.log(error);
     return NextResponse.json({
       ok: false,
-      message: "Something went wrong.",
+      message: 'Something went wrong.',
     });
   }
 };
@@ -33,7 +33,7 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json({
       ok: true,
-      message: "Successfully created!",
+      message: 'Successfully created!',
       product,
     });
   } catch (error) {

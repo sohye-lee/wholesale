@@ -1,15 +1,16 @@
-"use client";
-import React, { useState } from "react";
-import SearchForm from "@components/forms/searchForm";
-import { Product, ProductExtended } from "@/app/lib/types";
-import Button from "@components/UI/button/button";
+'use client';
+import React, { useState } from 'react';
+import SearchForm from '@components/forms/searchForm';
+import { Product, ProductExtended } from '@/app/lib/types';
+import Button from '@components/UI/button/button';
 import {
   IconEdit,
   IconPlus,
   IconChevronLeft,
   IconChevronRight,
-} from "@tabler/icons-react";
-import Link from "next/link";
+} from '@tabler/icons-react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProductTableProps {
   products: ProductExtended[];
@@ -29,7 +30,20 @@ export default function ProductTable({
       products.map((product) => {
         return (
           <tr key={product._id}>
-            <td>{product.title}</td>
+            <td>
+              <Link
+                href={`/products/${product._id}`}
+                className="flex items-center gap-2"
+              >
+                <Image
+                  src={product.thumbnail?.url || ''}
+                  width="80"
+                  height="80"
+                  alt={product.title}
+                />
+                {product.title}
+              </Link>
+            </td>
             <td>{product.price.base}</td>
             <td>{product.price.discounted}</td>
             <td>{product.quantity}</td>
