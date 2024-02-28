@@ -44,7 +44,7 @@ export default function ProductPage(props: any) {
     return (
       <div
         key={image?.id}
-        className="relative h-36 w-36  overflow-hidden   bg-cover"
+        className="relative aspect-square overflow-hidden "
         onClick={() => handleClick(image!)}
       >
         <Image
@@ -79,13 +79,9 @@ export default function ProductPage(props: any) {
               className=" object-cover"
             />
           </div>
-          <div className="w-full h-40 overflow-hidden relative overflow-x-scroll scroll-m-8 ::-webkit-appearancee:none">
-            <div className=" absolute top-0 left-0  w-auto flex flex-stretch gap-0 flex-nowrap">
-              {renderAllImages}
-            </div>
-          </div>
+          <div className="w-full grid grid-cols-4">{renderAllImages}</div>
         </div>
-        <div>
+        <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             {product?.categoryId?.name && (
               <Link href={`/categories/${product?.categoryId?.name}`}>
@@ -102,11 +98,26 @@ export default function ProductPage(props: any) {
           <h1 className="text-2xl md:text-3xl font-medium">
             {product?.title && capitalize(product?.title)}
           </h1>
-          <p className="text-md font-normal">{product?.description}</p>
-          <ul className=" list-item">
+          <div className="flex items-center">
+            <div className="flex items-center gap-3">
+              <div className="px-2 text-amber-600 text-lg font-medium border-2 border-amber-600 rounded">
+                ${product?.price?.discounted}
+              </div>
+              <span className="line-through font-medium">
+                ${product?.price?.base}
+              </span>
+              <span>{(product?.sale || 0) * 100}%</span>
+            </div>
+          </div>
+          <p className="text-md">{product?.description}</p>
+          <ul className="list-disc pl-5">
             {product?.bulletpoints &&
               product?.bulletpoints?.map((item) => {
-                return <li key={item}>{item}</li>;
+                return (
+                  <li key={item} className="font-light">
+                    {item}
+                  </li>
+                );
               })}
           </ul>
         </div>

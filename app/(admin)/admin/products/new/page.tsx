@@ -47,7 +47,7 @@ export default function ProductCreatePage() {
 
   useEffect(() => {
     data?.ok && data?.product && router.push(`/products/${data?.product?._id}`);
-  }, [data?.ok]);
+  }, [data?.ok, data?.product, router]);
   return (
     <Container width="small" addClass="pt-0">
       <ProductCreateForm onSubmit={onSubmit} />

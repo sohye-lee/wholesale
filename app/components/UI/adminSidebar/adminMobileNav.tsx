@@ -94,15 +94,7 @@ export default function AdminMobileNav() {
             <IconDashboard width={20} />
             <span>Dashboard</span>
           </NavItem>
-          <NavItem
-            link="/admin/products"
-            active={false}
-            dropdown={false}
-            setOpen={setOpen}
-          >
-            <IconPackage width={20} />
-            <span>Products</span>
-          </NavItem>
+
           <NavItem
             link="/admin/collections"
             active={false}
@@ -111,6 +103,15 @@ export default function AdminMobileNav() {
           >
             <IconFolder width={20} />
             <span>Collections</span>
+          </NavItem>
+          <NavItem
+            link="/admin/products"
+            active={false}
+            dropdown={false}
+            setOpen={setOpen}
+          >
+            <IconPackage width={20} />
+            <span>Products</span>
           </NavItem>
           <NavItem
             link="/admin/sales"

@@ -1,5 +1,5 @@
-import { Model, Schema, model, models } from 'mongoose';
-import { CategoryDocument } from '@lib/types';
+import { Model, Schema, model, models } from "mongoose";
+import { CategoryDocument } from "@lib/types";
 
 const categorySchema = new Schema<CategoryDocument>({
   name: {
@@ -8,6 +8,6 @@ const categorySchema = new Schema<CategoryDocument>({
   },
 });
 
-const CategoryModel = models.Category || model('Category', categorySchema);
+const CategoryModel = models.Category || model("Category", categorySchema);
 
 export default CategoryModel as Model<CategoryDocument>;

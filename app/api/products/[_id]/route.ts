@@ -15,9 +15,11 @@ export const GET = async (req: Request, context: any) => {
       .populate("categoryId")
       .populate("collectionId");
 
+    product?.sale;
     return NextResponse.json({
       ok: true,
-      product,
+      product: product?.toObject({ virtuals: true }),
+      sale: product?.sale,
       message: "Successfully loaded.",
     });
   } catch (error) {
