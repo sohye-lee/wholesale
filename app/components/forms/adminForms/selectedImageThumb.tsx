@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 interface Props {
   src?: string;
@@ -13,7 +13,7 @@ const SelectedImageThumb = ({ src }: Props) => {
         src={src}
         alt="product"
         fill
-        className="object-fill bg-blue-gray-200"
+        className=" h-auto w-auto min-h-full min-w-full bg-blue-gray-200"
       />
     </div>
   );

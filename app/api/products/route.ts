@@ -1,4 +1,6 @@
 import startDb from "@/app/lib/db";
+import CategoryModel from "@/app/models/categoryModel";
+import CollectionModel from "@/app/models/collectionModel";
 import ProductModel from "@/app/models/productModel";
 import { NextResponse } from "next/server";
 
@@ -6,8 +8,8 @@ export const GET = async (req: Request) => {
   try {
     await startDb();
     const products = await ProductModel.find({})
-      .populate({ path: "categoryId", model: "Category" })
-      .populate({ path: "collectionId", model: "Collection" });
+      .populate({ path: "categoryId", model: CategoryModel })
+      .populate({ path: "collectionId", model: CollectionModel });
     // .populate("collectionId");
 
     return NextResponse.json({

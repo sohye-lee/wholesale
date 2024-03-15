@@ -1,3 +1,4 @@
+"use client";
 import Container from "@/app/components/UI/container/container";
 import { ProductExtended } from "@/app/lib/types";
 import { usePathname, useSearchParams } from "next/navigation";

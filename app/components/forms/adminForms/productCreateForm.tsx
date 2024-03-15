@@ -47,7 +47,7 @@ export default function ProductCreateForm(props: Props) {
   const [isForUpdate, setIsForUpdate] = useState(false);
   const [productInfo, setProductInfo] = useState({ ...defaultValue });
   const [thumbnailSource, setThumbnailSource] = useState<string[]>();
-  const [productImagesSource, setProductImagesSource] = useState<string[]>();
+  const [productImagesSource, setProductImagesSource] = useState<string[]>([]);
   const [categoryId, setCategoryId] = useState<string>();
   const [collectionId, setCollectionId] = useState<string>();
   const [categories, setCategories] = useState<Category[]>();
@@ -102,8 +102,16 @@ export default function ProductCreateForm(props: Props) {
   };
 
   const removeImage = async (index: number) => {
-    const newImages = images.filter((_, idx) => idx !== index);
-    setImages([...newImages]);
+    // const newImages = images.filter((_, idx) => idx !== index);
+    // setImages([...newImages]);
+    if (!productImagesSource) return;
+    // in case this image is from cloud
+    const imageToRemove = productImagesSource[index];
+    console.log(imageToRemove);
+
+    // in case this image from local state
+
+    // update UI as well
   };
 
   const getBtnTitle = () => {
@@ -115,7 +123,7 @@ export default function ProductCreateForm(props: Props) {
     if (initialValue) {
       setProductInfo({ ...initialValue });
       setThumbnailSource([initialValue?.thumbnail]);
-      setProductImagesSource(initialValue?.images);
+      initialValue?.images && setProductImagesSource(initialValue?.images);
       setIsForUpdate(true);
       setCategoryId(initialValue?.categoryId);
       setCollectionId(initialValue?.collectionId);

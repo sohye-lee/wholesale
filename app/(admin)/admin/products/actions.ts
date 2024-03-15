@@ -49,3 +49,13 @@ export const getCloudSignature = async () => {
 //     console.log((error as any).message);
 //   }
 // };
+
+export const removeImageFromCloud = async (publicId: string) => {
+  try {
+    await cloudinary.uploader.destroy(publicId);
+    return { ok: true, message: "Image has been deleted." };
+  } catch (error) {
+    console.log(error);
+    return { ok: false, message: "Something went wrong." };
+  }
+};
