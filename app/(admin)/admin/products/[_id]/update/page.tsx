@@ -2,13 +2,18 @@
 import { uploadImage } from "@/app/lib/uploadImage";
 import Container from "@components/UI/container/container";
 import ProductCreateForm from "@components/forms/adminForms/productCreateForm";
-import { NewProductData } from "@lib/types";
+import {
+  NewProductData,
+  ProductEditInitialValues,
+  ProductInitialValues,
+} from "@lib/types";
 import React, { useEffect } from "react";
 import useRequest from "@/app/hooks/useRequest";
 import { toast } from "react-toastify";
 import { usePathname, useRouter } from "next/navigation";
 import useSWR from "swr";
 import swrFetcher from "@lib/swrFetcher";
+import ProductEditForm from "@/app/components/forms/adminForms/productEditForm";
 
 interface Image {
   id: string;
@@ -23,6 +28,7 @@ export default function ProductUpdatePage() {
     `/api/products/${productId}`,
     swrFetcher
   );
+
   const [updateProduct, { data, error, loading }] = useRequest(
     `/api/products`,
     "PUT"
@@ -54,13 +60,26 @@ export default function ProductUpdatePage() {
     }
   };
 
+  const initialValue: ProductEditInitialValues = {
+    ...productData?.product,
+    title: productData?.title ?? "",
+    thumbnail: productData?.product?.thumbnail?.url,
+    images: productData?.product?.images?.map(
+      (i: { id: string; url: string }) => {
+        return { url: i.url, id: i.id };
+      }
+    ),
+    bulletpoints: productData?.product?.bulletpoints
+      ? [...productData?.product?.bulletpoints]
+      : [""],
+  };
   useEffect(() => {
     data?.ok && data?.product && router.push(`/products/${data?.product?._id}`);
     console.log(productData);
   }, [data?.product, productData, router]);
   return (
     <Container width="small" addClass="pt-0">
-      <ProductCreateForm onSubmit={onSubmit} />
+      <ProductEditForm onSubmit={onSubmit} initialValue={initialValue} />
     </Container>
   );
 }

@@ -4,6 +4,7 @@ import {
   Category,
   Collection,
   NewProductData,
+  ProductEditInitialValues,
   ProductForm,
   ProductInitialValues,
 } from "@/app/lib/types";
@@ -18,18 +19,19 @@ import Input from "../input";
 import { useForm } from "react-hook-form";
 import Message from "../message";
 import useSWR from "swr";
-import swrFetcher from "@/app/lib/swrFetcher";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import Button from "../../UI/button/button";
 import ImageSelector from "./imageSelector";
 import { removeImageFromCloud } from "@/app/(admin)/admin/products/actions";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  initialValue?: ProductForm;
+  initialValue?: ProductEditInitialValues;
   onSubmit(values: NewProductData): void;
 }
 
-const defaultValue: ProductInitialValues = {
+const defaultValue: ProductEditInitialValues = {
+  _id: "",
   title: "",
   description: "",
   bulletpoints: [""],
@@ -38,23 +40,37 @@ const defaultValue: ProductInitialValues = {
   quantity: 0,
   categoryId: "",
   collectionId: "",
+  thumbnail: { id: "", url: "" },
 };
+const swrfetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export default function ProductCreateForm(props: Props) {
+export default function ProductEditForm(props: Props) {
+  const router = useRouter();
+  const { data: categoryData } = useSWR("/api/categories", swrfetcher);
+  const { data: collectionData } = useSWR("/api/collections", swrfetcher);
   const { initialValue, onSubmit } = props;
+  console.log(initialValue);
   const [isPending, startTransition] = useTransition();
   const [images, setImages] = useState<File[]>([]);
   const [thumbnail, setThumbnail] = useState<File>();
   const [isForUpdate, setIsForUpdate] = useState(false);
   const [productInfo, setProductInfo] = useState({
-    ...(props.initialValue ?? defaultValue),
+    ...(initialValue ?? defaultValue),
   });
-  const [thumbnailSource, setThumbnailSource] = useState<string[]>();
+  console.log("product info:", productInfo);
+  const [thumbnailSource, setThumbnailSource] = useState<string[]>([
+    productInfo.thumbnail,
+  ]);
+  console.log("thumbnail source:", thumbnailSource);
   const [productImagesSource, setProductImagesSource] = useState<string[]>([]);
   const [categoryId, setCategoryId] = useState<string>();
   const [collectionId, setCollectionId] = useState<string>();
-  const [categories, setCategories] = useState<Category[]>();
-  const [collections, setCollections] = useState<Collection[]>();
+  const [categories, setCategories] = useState<Category[]>(
+    categoryData?.categories
+  );
+  const [collections, setCollections] = useState<Collection[]>(
+    collectionData?.collections
+  );
   const {
     register,
     handleSubmit,
@@ -64,32 +80,26 @@ export default function ProductCreateForm(props: Props) {
     reValidateMode: "onChange",
   });
 
-  const [createProduct, { data, error, loading }] = useRequest(
-    "/api/products",
-    "POST"
-  );
+  // const [createProduct, { data, error, loading }] = useRequest(
+  //   "/api/products",
+  //   "POST"
+  // );
 
-  useState();
-  const { data: categoriesData, error: categoriesError } = useSWR(
-    "/api/categories",
-    swrFetcher
-  );
-  const { data: collectionsData, error: collectionsError } = useSWR(
-    "/api/collections",
-    swrFetcher
-  );
-
-  const fields = productInfo.bulletpoints;
+  const fields = productInfo.bulletpoints ?? [];
 
   const addMoreBulletPoints = () => {
     setProductInfo({
       ...productInfo,
-      bulletpoints: [...productInfo.bulletpoints, ""],
+      bulletpoints: productInfo?.bulletpoints
+        ? [...productInfo?.bulletpoints, ""]
+        : [],
     });
   };
 
   const removeBulletPoint = (indexToRemove: number) => {
-    const points = [...productInfo.bulletpoints];
+    const points = productInfo?.bulletpoints
+      ? [...productInfo?.bulletpoints, ""]
+      : [];
     const filteredPoints = points.filter((_, index) => index !== indexToRemove);
     setProductInfo({
       ...productInfo,
@@ -105,41 +115,47 @@ export default function ProductCreateForm(props: Props) {
   };
 
   const removeImage = async (index: number) => {
-    const newImages = images.filter((_, idx) => idx !== index);
-    setImages([...newImages]);
-    // if (!productImagesSource) return;
-    // // in case this image is from cloud
-    // const imageToRemove = productImagesSource[index];
-
-    // removeImageFromCloud(imageToRemove);
-
+    // const newImages = images.filter((_, idx) => idx !== index);
+    // setImages([...newImages]);
+    if (!productImagesSource) return;
+    // in case this image is from cloud
+    if (!initialValue || initialValue == undefined) return;
+    const imageToRemove =
+      productInfo && productInfo?.images && productInfo?.images[index];
+    if (!imageToRemove) return;
+    const res = removeImageFromCloud(imageToRemove.id, initialValue._id);
+    router.refresh();
     // in case this image from local state
 
     // update UI as well
   };
 
-  const getBtnTitle = () => {
-    if (isForUpdate) return isPending ? "Updating" : "Update";
-    return isPending ? "Creating" : "Create";
-  };
+  // const getBtnTitle = () => {
+  //   if (isForUpdate) return isPending ? "Updating" : "Update";
+  //   return isPending ? "Creating" : "Create";
+  // };
 
   useEffect(() => {
     if (initialValue) {
       setProductInfo({ ...initialValue });
-      setThumbnailSource([initialValue?.thumbnail]);
-      initialValue?.images && setProductImagesSource(initialValue?.images);
+      console.log("product Info set:", productInfo);
+      // setThumbnailSource([productInfo?.thumbnail?.url ?? ""]);
+
+      initialValue?.images &&
+        setProductImagesSource(initialValue?.images?.map((image) => image.url));
       setIsForUpdate(true);
       setCategoryId(initialValue?.categoryId);
       setCollectionId(initialValue?.collectionId);
     }
-    categoriesData?.ok && setCategories(categoriesData?.categories);
-    collectionsData?.ok && setCollections(collectionsData?.collections);
+    // categoriesData?.ok && setCategories(categoriesData?.categories);
+    // collectionsData?.ok && setCollections(collectionsData?.collections);
   }, [
     initialValue,
-    categoriesData?.ok,
-    collectionsData?.ok,
-    categoriesData?.categories,
-    collectionsData?.collectionIds,
+    // categoriesData?.ok,
+    // collectionsData?.ok,
+    // categoriesData?.categories,
+    // collectionsData?.collectionIds,
+    // removeImage,
   ]);
 
   const onImagesChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -382,7 +398,7 @@ export default function ProductCreateForm(props: Props) {
         <div>
           <h3>Bullet points</h3>
           <div className="w-full flex flex-col gap-2">
-            {fields.map((field, index) => (
+            {fields?.map((field, index) => (
               <div key={index} className="flex items-center w-full">
                 <Input
                   type="text"
@@ -422,7 +438,7 @@ export default function ProductCreateForm(props: Props) {
           size="medium"
           mode="save"
           disabled={Object.keys(errors).length != 0}
-          loading={loading}
+          // loading={loading}
           type="submit"
         >
           Create

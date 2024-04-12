@@ -13,7 +13,7 @@ export default function ImageInput({
   else rest.hidden = false;
 
   return (
-    <label htmlFor={id}>
+    <label htmlFor={id} className="">
       <input
         id={id}
         type="file"

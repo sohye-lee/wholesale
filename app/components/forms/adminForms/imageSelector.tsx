@@ -30,9 +30,13 @@ export default function ImageSelector({
   ) : (
     <IconPhoto className="w-8 h-8" />
   );
-
+  !multiple && console.log("images:", images);
   return (
-    <div className="flex items-center space-x-2">
+    <div
+      className={`flex items-center ${
+        (multiple || (!multiple && images)) && "space-x-2"
+      }`}
+    >
       {images?.map((img, index) => {
         return (
           <div key={index} className="relative">
@@ -49,7 +53,7 @@ export default function ImageSelector({
         );
       })}
 
-      <ImageInput id={id} onChange={onChange} multiple={multiple}>
+      <ImageInput id={id} onChange={onChange} multiple={multiple} className="">
         {icon}
       </ImageInput>
     </div>

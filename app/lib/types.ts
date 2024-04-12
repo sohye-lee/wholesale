@@ -132,6 +132,32 @@ export interface ProductExtended {
   images?: { id: string; url: string }[];
 }
 
+export interface ProductInitialValues {
+  title: string;
+  description: string;
+  thumbnail?: { id: string; url: string };
+  bulletpoints: string[];
+  images?: { _id: string; url: string; id: string }[];
+  base: number;
+  discounted: number;
+  quantity: number;
+  categoryId: string;
+  collectionId: string;
+}
+
+export interface ProductEditInitialValues {
+  _id: string;
+  title: string;
+  description: string;
+  thumbnail?: { id: string; url: string };
+  bulletpoints: string[];
+  images?: { _id: string; url: string; id: string }[];
+  base: number;
+  discounted: number;
+  quantity: number;
+  categoryId: string;
+  collectionId: string;
+}
 export interface ProductForm {
   title: string;
   description: string;
@@ -150,7 +176,7 @@ export interface NewProductData {
   description: string;
   thumbnail?: File;
   images?: File[];
-  bulletpoints: string[];
+  bulletpoints?: string[];
   base: number;
   discounted: number;
   quantity: number;

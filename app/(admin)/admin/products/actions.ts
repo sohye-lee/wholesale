@@ -1,15 +1,17 @@
 "use server";
 
 import startDb from "@/app/lib/db";
+import { env } from "@/app/lib/env";
 import { CreateProductData } from "@/app/lib/types";
 import ProductModel from "@/app/models/productModel";
 import { v2 as cloudinary } from "cloudinary";
+import { Db } from "mongodb";
 import { NextResponse } from "next/server";
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
+  cloud_name: env.CLOUD_NAME,
+  api_key: env.CLOUD_API_KEY,
+  api_secret: env.CLOUD_API_SECRET,
   secure: true,
 });
 
@@ -50,9 +52,22 @@ export const getCloudSignature = async () => {
 //   }
 // };
 
-export const removeImageFromCloud = async (publicId: string) => {
+export const removeImageFromCloud = async (
+  publicId: string,
+  productId: string
+) => {
   try {
-    await cloudinary.uploader.destroy(publicId);
+    const response = await cloudinary.uploader.destroy(publicId);
+    console.log(response);
+    const existingProduct = await ProductModel.findById(productId);
+    if (!existingProduct) return { ok: false, message: "Product not found." };
+    const updateProductResponse = await ProductModel.findOneAndUpdate(
+      { _id: productId },
+      {
+        images: existingProduct.images?.filter((image) => image.id != publicId),
+      }
+    );
+    console.log("image removed res: ", updateProductResponse);
     return { ok: true, message: "Image has been deleted." };
   } catch (error) {
     console.log(error);
